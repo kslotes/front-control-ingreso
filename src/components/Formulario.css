@@ -127,6 +127,11 @@
           font-size: 1em;
       }
       h2 {
-            font-size: 2em;
+            font-weight: 700;
+            font-size: 1.5em;
+            text-align: center
+      }
+      .label-preguntas {
+            font-weight: bold;
       }
   }

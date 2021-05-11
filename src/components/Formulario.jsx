@@ -10,6 +10,7 @@ const Formulario = () => {
         <Container className="fondo">
               <DatosPersonales/>
               <Ddjj/>
+
         </Container>
     );
 };

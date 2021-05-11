@@ -2,7 +2,7 @@ import { Form } from "react-bootstrap"
 
 const DatosPersonales = () => {
       return(
-            <Form className="seccion-container mt-5">
+            <Form className="seccion-container mt-3 mb-3">
                   <h2>Datos Personales</h2>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Nombre y Apellido*</Form.Label>
