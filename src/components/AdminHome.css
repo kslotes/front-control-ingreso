@@ -39,7 +39,10 @@
       color:var(--color-texto)
   }
   
-  
+ .col-sidebar .col-md-2{ 
+   margin: 0px;
+	padding: 0px;
+  }
   .form-control {
       transition: ease 0.1s;
   }
