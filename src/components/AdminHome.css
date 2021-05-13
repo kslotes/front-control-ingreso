@@ -16,7 +16,9 @@
       --background-gradient: var(--color-oscurox2);/*linear-gradient(to bottom,var(--color-claro) 0%, var(--color-oscurox2) 100%);*/
       --sombra-textos: rgba(0,0,0,0);
   }
-  
+  .fondo {
+	background-color: var(--color-fondo);
+  }
   body {
       font-family: 'Roboto', sans-serif;
       color: black;

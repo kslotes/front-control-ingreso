@@ -1,14 +1,18 @@
 import React from 'react';
 import NavBar from './NavBar';
-import {Container, Col} from 'react-bootstrap';
-const AdminHome = () => {
+import {Container, Col, Row} from 'react-bootstrap';
+import { withRouter } from "react-router";
+
+const Dashboard = () => {
   return (
-    <Container fluid>
-		<Col className="p-0 col-sidebar" md={2}>	
+    <Container fluid className="fondo">
+	  <Row>
+		<Col xs={2} id="sidebar-wrapper">	
 		  <NavBar/>
 		</Col>
+	  </Row>
     </Container>
   )
 }
-
+const AdminHome = withRouter(Dashboard);
 export default AdminHome;
