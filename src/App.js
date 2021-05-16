@@ -1,13 +1,15 @@
 import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import Formulario from './components/Formulario'
 import AdminHome from './components/AdminHome'
+import AdminCrearActividad from './components/AdminCrearActividad'
 import './App.css';
 
 function App() {
 	return (
 		<BrowserRouter>
                   <Switch>
-			<Route exact path="/Admin" component={AdminHome}/>
+						<Route exact path="/AdminCrearActividad" component={AdminCrearActividad}/>	
+						<Route exact path="/Admin" component={AdminHome}/>
                         <Route path="/" component={Formulario}/>
                   </Switch>
             </BrowserRouter>

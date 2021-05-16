@@ -38,7 +38,9 @@
   p,label {
       color:var(--color-texto)
   }
-  
+  .fondo-container {
+	background: var(--color-fondo);
+  }  
   
   .form-control {
       transition: ease 0.1s;
