@@ -4,7 +4,7 @@ import NavBarTop from './NavBarTop';
 import './AdminHome.css'
 const AdminHome = () => {
   return (
-    <Container className="fondo">
+    <Container fluid className="fondo">
 		<Row>
 		  <Col>
 			<NavBarTop/>

@@ -9,7 +9,7 @@ const NavBarTop = () => {
         <Row>
             <Navbar className="navbar" expand="md">
                 <Col xs={2} className="text-center ">
-					  <Link id="nav-logo" to="/Admin">UnSADA</Link>
+					  <Link id="nav-logo" to="/Admin">UNSAdA</Link>
                 </Col>
                 <Col xs={6} className="justify-content-around">
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

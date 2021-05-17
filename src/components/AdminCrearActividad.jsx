@@ -34,41 +34,40 @@ const AdminCrearActividad = () => {
 	},[]);
 	
 	  return (
-		<Container >
+		<Container fluid className="fondo" >
 		  <NavBarTop/>
-		  <Row>
-			  <Col xs={4} className="seccion-container">
-				<h2 className="texto-h2">Crear Actividad</h2>
-				  <Form>
-					<Form.Group >
-					  <Form.Label>Sede</Form.Label>
-					  <Form.Control as="select" onChange={handleSede} >
-						<option selected disabled>Seleccione una</option>
-						{sedes.map((sede) => { return (<option value={sede.idSede} key={sede.idSede}>{sede.nombre}</option>)})}
-						</Form.Control>
-					</Form.Group>
+			<Form>
+			  
+			  <Row sm={1} className="seccion-container mt-4">
+					<h2 className="texto-h2">Creacion de Actividad</h2>
+				<Col xs={12} sm={12} lg={6}>
+						<Form.Group >
+						  <Form.Label>Sede</Form.Label>
+						  <Form.Control as="select" onChange={handleSede} >
+							<option selected disabled>Seleccione una</option>
+							{sedes.map((sede) => { return (<option value={sede.idSede} key={sede.idSede}>{sede.nombre}</option>)})}
+							</Form.Control>
+						</Form.Group>
 
-					<Form.Group>
-					  <Form.Label>Edificio</Form.Label>
-					  <Form.Control as="select" onChange={handleChangeEdificio}>
-						<option selected disabled>Seleccione una</option>
-						{edificios.map((edificio) => { return (<option value={edificio.idEdificio} key={edificio.idEdificio}>{edificio.nombre}</option>)})}
-					  </Form.Control>
-					</Form.Group>
+						<Form.Group>
+						  <Form.Label>Edificio</Form.Label>
+						  <Form.Control as="select" onChange={handleChangeEdificio}>
+							<option selected disabled>Seleccione una</option>
+							{edificios.map((edificio) => { return (<option value={edificio.idEdificio} key={edificio.idEdificio}>{edificio.nombre}</option>)})}
+						  </Form.Control>
+						</Form.Group>
 
-					<Form.Group>
-					  <Form.Label>Aula</Form.Label>
-					  <Form.Control as="select" onChange={handleSede}>
-						<option selected disabled>Seleccione una</option>
-						{aulas.map((aula) => { return (<option value={aula.idAula} key={aula.idAula}>{aula.nombre}</option>)})}
-					  </Form.Control>
-					</Form.Group>
-				  </Form>
-			  </Col>
-			<Col xs={8} className="seccion-container">
-			  <FormNuevaActividad/>
-			</Col>
-			</Row>
+						<Form.Group>
+						  <Form.Label>Aula</Form.Label>
+						  <Form.Control as="select" onChange={handleSede}>
+							<option selected disabled>Seleccione una</option>
+							{aulas.map((aula) => { return (<option value={aula.idAula} key={aula.idAula}>{aula.nombre}</option>)})}
+						  </Form.Control>
+						</Form.Group>
+					  <FormNuevaActividad/>
+				</Col>
+			  </Row>
+			</Form>
 	  </Container>
 		)
 }

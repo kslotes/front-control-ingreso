@@ -21,9 +21,7 @@ const FormNuevaActividad = () => {
 		fetchDependencias();
 	}, []);	
 	return (
-			<Form>
-			  <Row xs={2}> 
-				  <Col >
+	  <div> 
 					<Form.Group >
 					  <Form.Label>Dependencia</Form.Label>
 					  <Form.Control as="select" onChange={handleDependencia} >
@@ -43,8 +41,6 @@ const FormNuevaActividad = () => {
 					  <Form.Control type="text" placeholder="Ingrese nombre de la actividad">
 						</Form.Control>
 					</Form.Group>
-				  </Col>
-				  <Col>
 					  <Form.Group>
 						<Form.Label>Fecha Inicio</Form.Label>
 						  <Form.Control type="date"/>
@@ -54,9 +50,7 @@ const FormNuevaActividad = () => {
 						<Form.Label>Fecha Fin</Form.Label>
 						  <Form.Control type="date"/>
 					  </Form.Group>
-				  </Col>
-			  </Row>
-			</Form>
+			  </div>
 			  )
 }
 
