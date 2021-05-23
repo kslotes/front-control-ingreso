@@ -4,6 +4,9 @@ import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, {textFilter} from "react-bootstrap-table2-filter";
 import "./TablaSeguimientos.css";
 import {Button, Form, Row, Col} from "react-bootstrap";
+import {useState} from "react";
+import axios from "axios";
+
 const indication = "Cargando Datos...";
 
 const columns = [
@@ -28,7 +31,6 @@ const columns = [
         filter: textFilter({
             placeholder: "Ingrese DNI",
         }),
-        hidden: true,
     },
     {
         dataField: "correoElectronico",
@@ -46,33 +48,74 @@ const columns = [
         text: "Telefono",
     },
 ];
+var sesionPresencial;
+var contactosEstrechos;
+var idSeguimiento;
+var fechaInicio;
+var fechaFin;
+
 const handleSeguimiento = () => {
-      
+    const fetchSesionPresencial = async () => {
+        const result = await axios.get(`http://areco.gob.ar:9528/api/sesionpresencial/find/persona/${idSeguimiento}`);
+        sesionPresencial = result.data.data;
+        console.log(result.data.data);
+    };
+    fetchSesionPresencial();
+    const fetchContactosEstrechos = async () => {
+        const result = await axios.get(`http://areco.gob.ar:9528/api`);
+        contactosEstrechos = result.data.data;
+        console.log(contactosEstrechos);
+    };
+};
+
+const handleFechaInicio = (e) => {
+    console.log(e.target.value);
+};
+
+const handleFechaFin = (e) => {
+    console.log(e.target.value);
 };
 const expandRow = {
     className: "expand",
     renderer: (row) => (
         <div>
-              <p><strong>Buscar contactos estrechos:</strong></p>
+            {(idSeguimiento = row.idPersona)}
+            {console.log(`ID Seguimiento: ${idSeguimiento}`)}
+
+            <p>
+                <strong>Buscar contactos estrechos:</strong>
+            </p>
             <Form>
                 <Row>
                     <Col xs={12} sm={6} md={3}>
                         <Form.Text>Fecha de Inicio</Form.Text>
-                        <Form.Control type="date" />
+                        <Form.Control onChange={handleFechaInicio} type="date" />
                     </Col>
                     <Col xs={12} sm={6} md={3}>
                         <Form.Text>Fecha de Fin</Form.Text>
-                        <Form.Control type="date" />
+                        <Form.Control onChange={handleFechaFin} type="date" />
                     </Col>
                 </Row>
             </Form>
             <Button className="mt-3" variant="info" onClick={handleSeguimiento}>
                 Realizar Seguimiento
             </Button>
+            {/* {sesionPresencial.map((sesion, i) => {
+                return (
+                    <div>
+                        <Button>
+                            Sesion {sesion.idSesionPresencial}. ${sesion.fecha}
+                        </Button>
+                    </div>
+                );
+            })} */}
         </div>
     ),
 };
+
 const TablaSeguimientos = ({data}) => {
+    //TODO: useState para persona a realizar seguimiento
+    // Renderizar Sesiones
     return (
         <BootstrapTable
             keyField="idPersona"
