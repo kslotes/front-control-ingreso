@@ -19,8 +19,8 @@ const NavBarTop = () => {
                         <Nav onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
                             <Nav.Item>
                                 <Link className="nav-link" to="/AdminDependencias">
-                                    <FaTasks className="mr-2" />
-                                    Administrar Dependencias
+                                    <FaTasks className="mr-3" />
+                                    Crear Actividad
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>

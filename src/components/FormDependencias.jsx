@@ -1,9 +1,13 @@
-import {Form} from "react-bootstrap";
+import {Form, Col, Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
 import axios from "axios";
 const FormDependencias = () => {
     const [dependencias, setDependencias] = useState([]);
     const [propuestas, setPropuestas] = useState([]);
+    let actividadJson = {};
+    let nombreActividad;
+    let idPropuesta;
 
     const handleDependencia = (event) => {
         const fetchPropuestas = async () => {
@@ -12,7 +16,21 @@ const FormDependencias = () => {
         };
         fetchPropuestas();
     };
-
+    const handleChangeActividad = (e) => {
+        nombreActividad = e.target.value;
+        console.log(nombreActividad);
+    };
+    const handlePropuesta = (e) => {
+        idPropuesta = e.target.value;
+        console.log(idPropuesta);
+    };
+    const handleSubmit = () => {
+        actividadJson = {
+            nombre: nombreActividad,
+        };
+        axios.post(`http://areco.gob.ar:9528/api/actividad/create-por-propuesta/${idPropuesta}`, actividadJson).then((res) => console.log(res.data));
+        console.log(actividadJson);
+    };
     useEffect(() => {
         const fetchDependencias = async () => {
             const result = await axios.get("http://areco.gob.ar:9528/api/dependencia/all");
@@ -37,9 +55,9 @@ const FormDependencias = () => {
                     })}
                 </Form.Control>
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mt-3">
                 <Form.Label>Propuesta</Form.Label>
-                <Form.Control as="select">
+                <Form.Control as="select" onChange={handlePropuesta}>
                     <option selected disabled>
                         Seleccione una
                     </option>
@@ -52,11 +70,17 @@ const FormDependencias = () => {
                     })}
                 </Form.Control>
             </Form.Group>
-            <Form.Group>
+            <Form.Group className="mt-3">
                 <Form.Label>Actividad</Form.Label>
-                <Form.Control type="text" placeholder="Ingrese nombre de la actividad"></Form.Control>
+                <Form.Control type="text" placeholder="Ingrese nombre de la actividad" onChange={handleChangeActividad}></Form.Control>
             </Form.Group>
-            
+            <Col className="mt-3 mb-2">
+                <Button type="Submit" variant="success" onClick={handleSubmit}>
+                    <Link to="/AdminActividades" style={{textDecoration: "none", color: "white"}}>
+                        Continuar
+                    </Link>
+                </Button>
+            </Col>
         </Form>
     );
 };

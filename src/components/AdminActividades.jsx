@@ -8,7 +8,11 @@ import axios from "axios";
 const AdminActividades = () => {
     const [sedes, setSedes] = useState([]);
     const [aulas, setAulas] = useState([]);
+    const [actividades, setActividades] = useState([]);
     const [edificios, setEdificios] = useState([]);
+    const [propuestas, setPropuestas] = useState([]);
+
+    const handleActividad = () => {};
     const handleSede = (event) => {
         const fetchEdificio = async () => {
             const result = await axios.get(`http://areco.gob.ar:9528/api/edificio/sede/find/${event.target.value}`);
@@ -24,11 +28,21 @@ const AdminActividades = () => {
         fetchAula();
     };
     useEffect(() => {
+          const fetchPropuestas = async () => {
+                const result = await axios.get("http://areco.gob.ar:9528/api/propuesta/all")
+                setPropuestas(result.data.data)
+          };
+          fetchPropuestas();
         const fetchSede = async () => {
             const result = await axios.get("http://areco.gob.ar:9528/api/sede/all");
             setSedes(result.data.data);
         };
         fetchSede();
+        const fetchActividades = async () => {
+            const result = await axios.get(`http://areco.gob.ar:9528/api/actividad/all`);
+            setActividades(result.data.data);
+        };
+        fetchActividades();
     }, []);
 
     return (
@@ -38,7 +52,22 @@ const AdminActividades = () => {
                 <Row sm={1} className="seccion-container mt-4">
                     <h2 className="texto-h2">Administrar Actividades</h2>
                     <Col xs={12} sm={12} lg={6}>
-                        <Form.Group>
+                        <Form.Group className="mt-3">
+                            <Form.Label>Actividad</Form.Label>
+                            <Form.Control as="select" onChange={handleActividad}>
+                                <option selected disabled>
+                                    Seleccione una
+                                </option>
+                                {actividades.map((actividad) => {
+                                    return (
+                                        <option value={actividad.idActividad} key={actividad.idActividad}>
+                                            {actividad.nombre}
+                                        </option>
+                                    );
+                                })}
+                            </Form.Control>
+                        </Form.Group>
+                        <Form.Group className="mt-3">
                             <Form.Label>Sede</Form.Label>
                             <Form.Control as="select" onChange={handleSede}>
                                 <option selected disabled>
@@ -53,7 +82,7 @@ const AdminActividades = () => {
                                 })}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="mt-3">
                             <Form.Label>Edificio</Form.Label>
                             <Form.Control as="select" onChange={handleChangeEdificio}>
                                 <option selected disabled>
@@ -68,7 +97,7 @@ const AdminActividades = () => {
                                 })}
                             </Form.Control>
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="mt-3">
                             <Form.Label>Aula</Form.Label>
                             <Form.Control as="select" onChange={handleSede}>
                                 <option selected disabled>
@@ -84,11 +113,11 @@ const AdminActividades = () => {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group>
+                        <Form.Group className="mt-3">
                             <Form.Label>Fecha Inicio</Form.Label>
                             <Form.Control type="date" />
                         </Form.Group>
-                        <Form.Group>
+                        <Form.Group className="mt-3">
                             <Form.Label>Fecha Fin</Form.Label>
                             <Form.Control type="date" />
                         </Form.Group>

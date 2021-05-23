@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // import Formulario from './components/Formulario';
 import AdminHome from './components/AdminHome';
