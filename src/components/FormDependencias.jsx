@@ -28,8 +28,11 @@ const FormDependencias = () => {
         actividadJson = {
             nombre: nombreActividad,
         };
-        axios.post(`http://areco.gob.ar:9528/api/actividad/create-por-propuesta/${idPropuesta}`, actividadJson).then((res) => console.log(res.data));
+        axios.post(`http://areco.gob.ar:9528/api/actividad/create-por-propuesta/${idPropuesta}`, actividadJson)
+        .then(() => alert(`Actividad: ${actividadJson.nombre} creada satisfactoriamente`))
+        .catch(() => alert("No se pudo guardar, revise los datos e intente nuevamente."));
         console.log(actividadJson);
+        
     };
     useEffect(() => {
         const fetchDependencias = async () => {
@@ -75,10 +78,8 @@ const FormDependencias = () => {
                 <Form.Control type="text" placeholder="Ingrese nombre de la actividad" onChange={handleChangeActividad}></Form.Control>
             </Form.Group>
             <Col className="mt-3 mb-2">
-                <Button type="Submit" variant="success" onClick={handleSubmit}>
-                    <Link to="/AdminActividades" style={{textDecoration: "none", color: "white"}}>
-                        Continuar
-                    </Link>
+                <Button variant="success" onClick={handleSubmit}>
+                    Guardar
                 </Button>
             </Col>
         </Form>
