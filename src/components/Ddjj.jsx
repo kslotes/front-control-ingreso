@@ -1,101 +1,184 @@
-import React, {useState, useEffect} from "react";
-import {Button, Form} from "react-bootstrap";
+import React, {useState, useEffect,useRef} from "react";
+import {Button, Col, Form} from "react-bootstrap";
 import axios from "axios";
 import "./Formulario.css";
+import { Redirect } from "react-router";
 
 
 const Ddjj = () => {
-    
+  
+        
+   
+    var date;
+date = new Date();
+date = date.getUTCFullYear() + '-' +
+    ('00' + (date.getUTCMonth()+1)).slice(-2) + '-' +
+    ('00' + date.getUTCDate()).slice(-2) + ' ' //+ 
+   // ('00' + date.getUTCHours()).slice(-2) + ':' + 
+    //('00' + date.getUTCMinutes()).slice(-2) + ':' + 
+    //('00' + date.getUTCSeconds()).slice(-2);
+    console.log(date);
+
+    const inputRef = useRef([]);
+    const [respuestas,setRespuestas]=useState([]);
     const [preguntas, setPreguntas] = useState([]);
-    const [value, setValue] = useState([]);
+    const [factorDeRiesgoData, setFactorDeRiesgoData] = useState([]);
     const [factorDeRiesgo, setFactorDeRiesgo] = useState([]);
+    const [fecha,setFecha]=useState();
+    const [ddjj,setDdjj]=useState();
+    const [redirect,setRedirect]=useState(false);
+    const postDdjj=(ddjjs)=>{
+  
+        if (typeof ddjjs.fecha !== undefined && ddjj.respuestas.length !== 0) {
+            console.log("Data",ddjjs)
+            axios.post("http://areco.gob.ar:9528/api/ddjj/crear/"+localStorage.getItem("id_persona"),ddjj)
+            .then((resp)=>{
+                console.log("success")
+                console.log(resp.data.data)
+                localStorage.setItem("ddjj", resp.data.data)
+                console.log("ddjj",localStorage.getItem("ddjj"))
+                setRedirect(true);
+            })
+            .catch((error)=>{console.log(error)})
+            
+        }
+           
+       }
 
-
-    const handleChangeFactor=(event)=>{
-        const name = event.target.name
-        const valor = event.target.value
-        setValue((value) => [...value, {[name]: valor}]);
+    const handleChangeFactor=(fr,nombre)=>{
+       console.log(fr,nombre)
+       setFactorDeRiesgo(prevState=>[...prevState,{
+        idFactorDeRiesgo: fr,
+        nombre: nombre,
+    } ])
     }
     const handleSubmit = (event) => {
+        setFecha(date);
+        inputRef.current.map((data,i)=>{
+            return(
+               setRespuestas(prevState=>[...prevState,{
+                pregunta:{
+                    idPregunta:i+1
+                },
+                afirmativo: !data.checked
+            } ])
+             
+            )
+        })
+       
         event.preventDefault();
-        console.log(value)
+   
+        
+       
     }
-    const handleChange = (event) => {
-        const name = event.target.name
-        const valor = event.target.value
-        setValue((value) => [...value, {[name]: valor}]);
-        // axios.put(`http://areco.gob.ar:9528/api/respuesta/{idPregunta}`, value);
-    };
+   
     useEffect(() => {
         axios.get(`http://areco.gob.ar:9528/api/pregunta/all`).then((res) => {
             setPreguntas(res.data.data);
         });
-        axios.get(`http://areco.gob.ar:9528/api/factorderiesgo/all`).then((res) => {
-            setFactorDeRiesgo(res.data.data);
+        axios.get(`http://areco.gob.ar:9528//api/FactorDeRiesgo/all`).then((res) => {
+            setFactorDeRiesgoData(res.data.data);
         });
+        inputRef.current = new Array(preguntas.length);
     }, []);
     
-    // console.log(`Respuestas: {\n\t nameCheck: ${value.name}\n\t idPregunta:${value.idPregunta},\n\t afirmativo: ${value.afirmativo}\n\t}`);
-    console.log(value)
-    console.log(factorDeRiesgo)
+    useEffect( () => {
+        if(preguntas.length !== 0) {
+            inputRef.current[preguntas.length - 1].focus();
+         }
+    }, [preguntas]);
+    useEffect(() => {
+        setDdjj({
+            fecha,
+            factorDeRiesgo,
+            respuestas,
+        })
+        
+    }, [fecha,factorDeRiesgo,respuestas])
+    useEffect(() => {
+        if (typeof fecha !== undefined && respuestas.length !== 0) {
+            postDdjj(ddjj)
+        } 
+    }, [fecha,ddjj,respuestas])
+    console.log(localStorage.getItem("id_persona"))
+    console.log(localStorage.getItem("nombre"))
+
+
+    if (redirect) {
+        return <Redirect to="/solicitud"/>
+      }else{
+    if (localStorage.getItem("id_persona")!==null) {
     return (
+        
         <>
         <Form className="seccion-container mb-3" onSubmit={handleSubmit}>
-            <h2>Declaración Jurada</h2>
+            <h2 className="subtitulo">Declaración Jurada</h2>
+            <h3 className="subtitulo">{localStorage.getItem("nombre")}</h3>
             {preguntas.map((pregunta, i) => {
                 return (
-                    <div>
-                        <Form.Label className="label-preguntas mt-3">{pregunta.descripcion}</Form.Label>
+                    <div >
+                        <Form.Label  className="label-preguntas mt-3">{pregunta.descripcion}</Form.Label>
+                        
                         <Form.Check
+                           ref = {el => inputRef.current[i] = el}
+                            required
                             xs={6}
-                            name={"pregunta"+i}
+                            name={"pregunta"+(i+1)}
                             label="Si"
                             key={i}
                             type="radio"
-                            value={1}
-                            onChange={handleChange}
+                           
+                           
                         />
+                        
                         <Form.Check
+                           
+                           ref = {el => inputRef.current[i] = el}
+                          
+                            required
                             xs={6}
-                            name={"pregunta"+i}
+                            name={"pregunta"+(i+1)}
                             label="No"
-                            key={i + 10}
+                            key={10+i}
                             type="radio"
-                            value={0}
-                            onChange={handleChange}
+                           
+                           
                     
                         />
+                       
                     </div>
                 );
             })}
-            <Button variant="primary" type="submit">Confirmar</Button>
+           
             {/*TODO: Agregar Todo lo que sea factor de riesgo (select con opciones multiples) Cada vez que una persona realiza la DDJJ, hay que serializarla Value tiene que ser un array. Tamaño = cant
             preguntas
                     Manejar cuando intercambian de opcion en cada pregunta
                     Antes de hacer el PUT aplicar .filter() al array que usamos*/}
-        </Form>
-        
-        <Form className="seccion-container mb-3" onSubmit={handleSubmit}>
-        <h2>Si tu situacion de salud contempla alguna de las siguientes opciones,seleccione algunas de las siguientes opciones </h2>
-            {factorDeRiesgo.map((data,i)=>{
+       
+        <h2 className="subtitulo">Si tu situacion de salud contempla alguna de las siguientes opciones,seleccione algunas de las siguientes opciones </h2>
+            {factorDeRiesgoData.map((data,i)=>{
                 return(
                     <>
-                    <Form.Label className="label-preguntas mt-3">{factorDeRiesgo.nombre}</Form.Label>
+                    <Form.Label key={10+i} className="label-preguntas mt-3">{factorDeRiesgo.nombre}</Form.Label>
                         <Form.Check
+                            
                             xs={6}
-                            name={"factor"+i}
+                            name={data.nombre}
                             label="Si"
                             key={i}
                             type="radio"
                           
-                            onChange={handleChangeFactor}
+                            onChange={()=>handleChangeFactor(data.idFactorDeRiesgo,data.nombre)}
                         />
                     </>
                 )
             })}
+             <Button variant="primary" type="submit" >Confirmar</Button>
         </Form>
        </>
     );
+}else return <Redirect to="/"/>
+      }
 };
 
 export default Ddjj;

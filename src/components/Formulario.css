@@ -34,7 +34,9 @@
       color: var(--color-texto)
   }
   
-  
+  .subtitulo{
+      color: aliceblue;
+  }
   p,label {
       color:var(--color-texto)
   }
