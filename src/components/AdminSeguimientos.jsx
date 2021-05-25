@@ -2,6 +2,7 @@ import NavBarTop from "./NavBarTop";
 import {useState, useEffect} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import TablaSeguimientos from "./TablaSeguimientos";
+import TablaSeguimientos2 from "./TablaSeguimientos2";
 import "./AdminSeguimientos.css";
 import axios from "axios";
 
@@ -24,7 +25,7 @@ const AdminSeguimientos = () => {
                   <Col>
                         <h2 className="texto-h2">Seguimientos de Personas</h2>
                   </Col>
-                <TablaSeguimientos data={personas}/>
+                <TablaSeguimientos2 personas={personas}/>
             </Row>
         </Container>
     );
