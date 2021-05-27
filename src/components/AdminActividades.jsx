@@ -8,7 +8,7 @@ const AdminActividades = () => {
     const [sedes, setSedes] = useState([]);
     const [aulas, setAulas] = useState([]);
     const [aula, setAula] = useState();
-    const [aulasSegunHorario, setAulasSegunHorario] = useState([])
+    const [aulasSegunHorario, setAulasSegunHorario] = useState([]);
 
     const [actividadesSegunPropuesta, setActividadesSegunPropuesta] = useState([]);
     const [edificiosSegunHorario, setEdificiosSegunHorario] = useState([]);
@@ -17,9 +17,10 @@ const AdminActividades = () => {
     const [propuestaSegunHorario, setPropuestaSegunHorario] = useState();
     const [aulaSegunHorario, setAulaSegunHorario] = useState();
     const [sede, setSede] = useState([]);
-    const [cohorteSegunHorario, setCohorteSegunHorario] = useState()
+    const [cohortes, setCohortes] = useState([]);
+    const [cohorteSegunHorario, setCohorteSegunHorario] = useState();
     const [sedeSegunHorario, setSedeSegunHorario] = useState();
-    const [sedesSegunHorario, setSedesSegunHorario] = useState([  ])
+    const [sedesSegunHorario, setSedesSegunHorario] = useState([]);
     const [fechaInicio, setFechaInicio] = useState([]);
     const [fechaFin, setFechaFin] = useState([]);
     const [actividad, setActividad] = useState([]);
@@ -35,9 +36,13 @@ const AdminActividades = () => {
     let cohorteJSON = {};
     let horarioJSON = {};
 
+    const handleChangeCohorte = (event) => {
+        console.log(`Soy el cohorte seleccionado: ${event.target.value}`);
+        setCohorteSegunHorario(event.target.value);
+    };
     const handleAula = (event) => {
-          setAula(event.target.value);
-    }
+        setAula(event.target.value);
+    };
     const handleChangeModalidad = (event) => {
         console.log(`Soy la modalidad: ${event.target.value}`);
         setModalidad(event.target.value);
@@ -57,12 +62,13 @@ const AdminActividades = () => {
     const handleCreacionHorario = () => {
         horarioJSON = {
             dia: diaSemana,
-            horaInicio: horaInicio,
-            horaFin: horaFin,
+            horaInicio: horaInicio + ":00",
+            horaFin: horaFin + ":00",
             nombre: modalidad,
         };
-        axios.post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/{idActividad}/{idAula}/{idCohorte}`);
-        console.log(`Actividad: ${actividadSegunHorario}, Propuesta: ${propuestaSegunHorario}, Aula: ${aulaSegunHorario} \nhorarioJSON: `, horarioJSON);
+        axios.post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`, horarioJSON);
+        console.log(`Actividad: ${actividadSegunHorario}, Aula: ${aulaSegunHorario}, Cohorte: ${cohorteSegunHorario} \nhorarioJSON: `, horarioJSON);
+        console.log(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`);
     };
     const handlePropuestaHorario = (event) => {
         console.log(`Soy la propuesta que le asignan horario: ${event.target.value}`);
@@ -80,24 +86,30 @@ const AdminActividades = () => {
             setEdificiosSegunHorario(result.data.data);
         };
         fetchEdificioSegunHorario();
-        console.log(`Soy la sede que le asignan horario: ${event.target.value}`)
+        console.log(`Soy la sede que le asignan horario: ${event.target.value}`);
         setSedeSegunHorario(event.target.value);
     };
     const handleEdificioHorario = (event) => {
-      const fetchAulaSegunHorario = async () => {
+        const fetchAulaSegunHorario = async () => {
             const result = await axios.get(`http://areco.gob.ar:9528/api/aula/find/edificio/${event.target.value}`);
             setAulasSegunHorario(result.data.data);
         };
         fetchAulaSegunHorario();
     };
     const handleAulaHorario = (event) => {
-          setAulaSegunHorario(event.target.value)
-          console.log(`Soy el aula que le asignan horario: ${event.target.value}`)
+        setAulaSegunHorario(event.target.value);
+        console.log(`Soy el aula que le asignan horario: ${event.target.value}`);
     };
 
     const handleActividadHorario = (event) => {
         console.log(`Soy la actividad que le asignan horario: ${event.target.value}`);
         setActividadSegunHorario(event.target.value);
+        const fetchCohorteSegunActividad = async () => {
+            const result = await axios.get(`http://areco.gob.ar:9528/api/cohorte/por-actividad/${event.target.value}`);
+            console.log(result.data.data);
+            setCohortes(result.data.data);
+        };
+        fetchCohorteSegunActividad();
     };
     const handleCreacionCohorte = () => {
         cohorteJSON = {
@@ -151,7 +163,7 @@ const AdminActividades = () => {
         const fetchSede = async () => {
             const result = await axios.get("http://areco.gob.ar:9528/api/sede/all");
             setSedes(result.data.data);
-            setSedesSegunHorario(result.data.data)
+            setSedesSegunHorario(result.data.data);
         };
         fetchSede();
     }, []);
@@ -165,7 +177,8 @@ const AdminActividades = () => {
                     <Row lg={2}>
                         {/* SECCION DE SELECCION DE COHORTE */}
 
-                        <Col xs={12} sm={12} lg={6}>
+                        <Col xs={12} sm={12} lg={6} className="seccion-actividad">
+                            <h2 className="texto-h2">Seleccionar Cohorte</h2>
                             <Form.Group className="mt-4">
                                 <Form.Label>Propuesta</Form.Label>
                                 <Form.Control as="select" onChange={handlePropuesta}>
@@ -257,7 +270,7 @@ const AdminActividades = () => {
 
                         {/* SECCION DE SELECCION DE DIAS Y HORARIOS */}
 
-                        <Col xs={12} sm={12} lg={6}>
+                        <Col xs={12} sm={12} lg={5} className="seccion-actividad">
                             <Col xs={12} className="text-center">
                                 <h2 className="texto-h2">Seleccionar días y horarios</h2>
                             </Col>
@@ -306,12 +319,12 @@ const AdminActividades = () => {
                                                 Seleccione un dia
                                             </option>
                                             {aulasSegunHorario.map((aula) => {
-                                        return (
-                                            <option value={aula.idAula} key={aula.idAula}>
-                                                {aula.nombre}
-                                            </option>
-                                        );
-                                    })}
+                                                return (
+                                                    <option value={aula.idAula} key={aula.idAula}>
+                                                        {aula.nombre}
+                                                    </option>
+                                                );
+                                            })}
                                         </Form.Control>
                                     </InputGroup>
                                 </Col>
@@ -370,6 +383,25 @@ const AdminActividades = () => {
                                 </Col>
                             </Row>
 
+                            <Form.Group>
+                                <InputGroup className="mt-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>Cohorte</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control as="select" onChange={handleChangeCohorte}>
+                                        <option selected disabled>
+                                            Seleccione una
+                                        </option>
+                                        {cohortes.map((cohorte) => {
+                                            return (
+                                                <option value={cohorte.idCohorte} key={cohorte.idCohorte}>
+                                                    Inicio: {cohorte.fechaInicio} - Fin: {cohorte.fechaFin}
+                                                </option>
+                                            );
+                                        })}
+                                    </Form.Control>
+                                </InputGroup>
+                            </Form.Group>
                             <Form.Group>
                                 <InputGroup className="mt-3">
                                     <InputGroup.Prepend>

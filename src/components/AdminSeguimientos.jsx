@@ -25,7 +25,7 @@ const AdminSeguimientos = () => {
                   <Col>
                         <h2 className="texto-h2">Seguimientos de Personas</h2>
                   </Col>
-                <TablaSeguimientos2 personas={personas}/>
+                <TablaSeguimientos2 />
             </Row>
         </Container>
     );
