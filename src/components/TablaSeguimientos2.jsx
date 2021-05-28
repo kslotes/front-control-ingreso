@@ -11,13 +11,16 @@ const TablaSeguimientos2 = () => {
     const [persona, setPersona] = useState({});
     const [fechaInicio, setFechaInicio] = useState();
     const [fechaFin, setFechaFin] = useState();
+    const [idPersona, setIdPersona] = useState()
 
     const handleInputDni = (event) => {
+        event.preventDefault();
         console.log(`Soy el Dni Ingresdo: ${event.target.value}`);
 
         axios.get(`http://areco.gob.ar:9528/api/persona/find/dni/${event.target.value}`).then((result) => {
             if (result.data.data) {
                 setPersona(result.data.data);
+                setIdPersona(result.data.data.idPersona)
                 console.log(result.data.data);
                 console.log(`Encontre a: ${persona}`);
                 setHiddenFound(false);
@@ -46,21 +49,24 @@ const TablaSeguimientos2 = () => {
     };
 
     const handleSeguimiento = () => {
-        axios.get(`http://areco.gob.ar:9528/api/persona/find/persona_sesion/${fechaInicio}/${fechaFin}`).then((res) => {
+        axios.get(`http://areco.gob.ar:9528/api/persona/find/persona_sesion/${fechaInicio}/${fechaFin}/${persona.idPersona}`).then((res) => {
             setContactosEstrechos(res.data.data);
             console.log(res.data.data);
             if (contactosEstrechos) {
                 setHiddenTable(false);
             }
-        });
+        }).catch(() => Swal.fire({
+            title: `¡Oops!`,
+            text: `Hubo un error en la consulta, intente nuevamente.`,
+            icon: `error`,
+            confirmButtonText: `Entiendo`,
+        }));
     };
     return (
         <div className="d-flex flex-column align-items-center">
             <Col xs={12} sm={12} lg={3} className="text-center mt-3">
-                <Form>
                     <Form.Label>Ingrese DNI:</Form.Label>
-                    <input placehoder="Ingrese dni" type="text" class="form-control" pattern="(^[0-9][0-9]?\.{1}\d{3}\.\d{3}$)|([0-9][0-9]?\d{3}\d{3}$)" onChange={handleInputDni}></input>
-                </Form>
+                    <input placehoder="Ingrese dni" type="text" className="form-control" pattern="(^[0-9][0-9]?\.{1}\d{3}\.\d{3}$)|([0-9][0-9]?\d{3}\d{3}$)" onChange={handleInputDni}></input>
             </Col>
 
             <Col hidden={hiddenFound} className="mt-3 text-center">

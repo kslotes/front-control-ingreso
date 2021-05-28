@@ -3,6 +3,7 @@ import {Form, Col, Row, Container, Button, InputGroup} from "react-bootstrap";
 import "./AdminActividades.css";
 import {useState, useEffect} from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const AdminActividades = () => {
     const [sedes, setSedes] = useState([]);
@@ -66,7 +67,20 @@ const AdminActividades = () => {
             horaFin: horaFin + ":00",
             nombre: modalidad,
         };
-        axios.post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`, horarioJSON);
+        axios.post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`, horarioJSON)
+        .then(() => Swal.fire({
+            title: `¡Éxito!`,
+            text: `Horario asignado correctamente.`,
+            icon: `success`,
+            confirmButtonText: `Listo`,
+            confirmButtonColor: `#198754`
+        }))
+    .catch(() => Swal.fire({
+          title: `No se pudo asignar el horario.`,
+          text: `Verifique los datos e intente nuevamente`,
+          icon: `error`,
+          confirmButtonText: `Aceptar`,
+      }));
         console.log(`Actividad: ${actividadSegunHorario}, Aula: ${aulaSegunHorario}, Cohorte: ${cohorteSegunHorario} \nhorarioJSON: `, horarioJSON);
         console.log(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`);
     };
@@ -117,9 +131,19 @@ const AdminActividades = () => {
             fechaFin: fechaFin,
         };
         axios
-            .post(`http://areco.gob.ar:9528/api/cohorte/create/${sede}/${actividad}`, cohorteJSON)
-            .then(() => alert("Cohorte creado satisfactoriamente."))
-            .catch(() => alert("Error al crear cohorte. Verifique los datos e intente nuevamente"));
+            .post(`http://areco.gob.ar:9528/api/cohorte/create/${actividad}/${sede}`, cohorteJSON)
+            .then(() => Swal.fire({
+                    title: `¡Éxito!`,
+                    text: `Cohorte creado satisfactoriamente.`,
+                    icon: `success`,
+                    confirmButtonText: `Listo`,
+                }))
+            .catch(() => Swal.fire({
+                  title: `No se pudo crear el cohorte`,
+                  text: `Verifique los datos e intente nuevamente`,
+                  icon: `error`,
+                  confirmButtonText: `Aceptar`,
+              }))
     };
     const handleActividad = (event) => {
         setActividad(event.target.value);
@@ -274,7 +298,7 @@ const AdminActividades = () => {
                             <Col xs={12} className="text-center">
                                 <h2 className="texto-h2">Seleccionar días y horarios</h2>
                             </Col>
-                            <Row xs={1} sm={1} xs={2}>
+                            <Row xs={1} sm={1} lg={2}>
                                 <Col xs={12} sm={6} lg={6}>
                                     <InputGroup className="mt-4">
                                         <InputGroup.Prepend>

@@ -2,6 +2,7 @@ import {Form, Col, Button} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
 import axios from "axios";
+import Swal from 'sweetalert2'
 const FormDependencias = () => {
     const [dependencias, setDependencias] = useState([]);
     const [propuestas, setPropuestas] = useState([]);
@@ -29,8 +30,20 @@ const FormDependencias = () => {
             nombre: nombreActividad,
         };
         axios.post(`http://areco.gob.ar:9528/api/actividad/create-por-propuesta/${idPropuesta}`, actividadJson)
-        .then(() => alert(`Actividad: ${actividadJson.nombre} creada satisfactoriamente`))
-        .catch(() => alert("No se pudo guardar, revise los datos e intente nuevamente."));
+        .then(() => Swal.fire({
+            title: `¡Éxito!`,
+            text: `Actividad creada satisfactoriamente, ${nombreActividad}`,
+            icon: `success`,
+            confirmButtonText: `Listo`,
+            confirmButtonColor: `#198754`
+        }))
+        .catch(() => Swal.fire({
+            title: `Error`,
+            text: `Revise los datos e intente nuevamente.`,
+            icon: `error`,
+            confirmButtonText: `Listo`,
+            confirmButtonColor: `#198754`
+        }));
         console.log(actividadJson);
         
     };
