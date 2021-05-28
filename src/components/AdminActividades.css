@@ -30,10 +30,25 @@
 }
 
 .seccion-actividad {
-      background-color: var(--color-fondo-secciones);
-      box-shadow: var(--sombra-container);
-      border-radius: 10px;
-      border: 3px solid #335f69;
-      padding: 1rem 1.5rem 1rem 1.5rem;
-      margin: 1rem;
-  }
+    background-color: var(--color-fondo-secciones);
+    box-shadow: var(--sombra-container);
+    border-radius: 10px;
+    border: 3px solid #335f69;
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    margin: 1rem;
+}
+
+#btn-crear-cohorte {
+    width: 100%;
+}
+
+#btn-crear-horario {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .col-lg-5 {
+        flex: 0 0 auto;
+        width: 45.6666666667%;
+    }
+}

@@ -1,5 +1,4 @@
 import {Form, Col, Button} from "react-bootstrap";
-import {Link} from "react-router-dom";
 import {useState, useEffect} from "react";
 import axios from "axios";
 import Swal from 'sweetalert2'
@@ -32,7 +31,7 @@ const FormDependencias = () => {
         axios.post(`http://areco.gob.ar:9528/api/actividad/create-por-propuesta/${idPropuesta}`, actividadJson)
         .then(() => Swal.fire({
             title: `¡Éxito!`,
-            text: `Actividad creada satisfactoriamente, ${nombreActividad}`,
+            text: `Actividad creada satisfactoriamente`,
             icon: `success`,
             confirmButtonText: `Listo`,
             confirmButtonColor: `#198754`

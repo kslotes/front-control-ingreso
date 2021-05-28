@@ -21,6 +21,7 @@ const AdminActividades = () => {
     const [cohortes, setCohortes] = useState([]);
     const [cohorteSegunHorario, setCohorteSegunHorario] = useState();
     const [sedeSegunHorario, setSedeSegunHorario] = useState();
+    const [dependencias, setDependencias] = useState([]);
     const [sedesSegunHorario, setSedesSegunHorario] = useState([]);
     const [fechaInicio, setFechaInicio] = useState([]);
     const [fechaFin, setFechaFin] = useState([]);
@@ -32,7 +33,7 @@ const AdminActividades = () => {
     const [modalidad, setModalidad] = useState();
 
     const DIAS_SEMANA = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
-    const MODALIDADES = ["Teórico", "Práctico", "Teórico-Práctico"];
+    const MODALIDADES = ["Teórico", "Práctico", "Teórico-Práctico", "Actividad Extracurricular"];
 
     let cohorteJSON = {};
     let horarioJSON = {};
@@ -67,20 +68,25 @@ const AdminActividades = () => {
             horaFin: horaFin + ":00",
             nombre: modalidad,
         };
-        axios.post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`, horarioJSON)
-        .then(() => Swal.fire({
-            title: `¡Éxito!`,
-            text: `Horario asignado correctamente.`,
-            icon: `success`,
-            confirmButtonText: `Listo`,
-            confirmButtonColor: `#198754`
-        }))
-    .catch(() => Swal.fire({
-          title: `No se pudo asignar el horario.`,
-          text: `Verifique los datos e intente nuevamente`,
-          icon: `error`,
-          confirmButtonText: `Aceptar`,
-      }));
+        axios
+            .post(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`, horarioJSON)
+            .then(() =>
+                Swal.fire({
+                    title: `¡Éxito!`,
+                    text: `Horario asignado correctamente.`,
+                    icon: `success`,
+                    confirmButtonText: `Listo`,
+                    confirmButtonColor: `#198754`,
+                })
+            )
+            .catch(() =>
+                Swal.fire({
+                    title: `No se pudo asignar el horario.`,
+                    text: `Verifique los datos e intente nuevamente`,
+                    icon: `error`,
+                    confirmButtonText: `Aceptar`,
+                })
+            );
         console.log(`Actividad: ${actividadSegunHorario}, Aula: ${aulaSegunHorario}, Cohorte: ${cohorteSegunHorario} \nhorarioJSON: `, horarioJSON);
         console.log(`http://areco.gob.ar:9528/api/horario/create-por-cohorte/${actividadSegunHorario}/${aulaSegunHorario}/${cohorteSegunHorario}`);
     };
@@ -132,18 +138,22 @@ const AdminActividades = () => {
         };
         axios
             .post(`http://areco.gob.ar:9528/api/cohorte/create/${actividad}/${sede}`, cohorteJSON)
-            .then(() => Swal.fire({
+            .then(() =>
+                Swal.fire({
                     title: `¡Éxito!`,
                     text: `Cohorte creado satisfactoriamente.`,
                     icon: `success`,
                     confirmButtonText: `Listo`,
-                }))
-            .catch(() => Swal.fire({
-                  title: `No se pudo crear el cohorte`,
-                  text: `Verifique los datos e intente nuevamente`,
-                  icon: `error`,
-                  confirmButtonText: `Aceptar`,
-              }))
+                })
+            )
+            .catch(() =>
+                Swal.fire({
+                    title: `No se pudo crear el cohorte`,
+                    text: `Verifique los datos e intente nuevamente`,
+                    icon: `error`,
+                    confirmButtonText: `Aceptar`,
+                })
+            );
     };
     const handleActividad = (event) => {
         setActividad(event.target.value);
@@ -163,6 +173,13 @@ const AdminActividades = () => {
         };
         fetchActividadesSegunPropuesta();
     };
+    const handleDependencia = (event) => {
+        const fetchPropuestas = async () => {
+            const result = await axios.get("http://areco.gob.ar:9528/api/propuesta/all");
+            setPropuestas(result.data.data);
+        };
+        fetchPropuestas();
+    };
     const handleSede = (event) => {
         const fetchEdificio = async () => {
             const result = await axios.get(`http://areco.gob.ar:9528/api/edificio/sede/find/${event.target.value}`);
@@ -179,17 +196,17 @@ const AdminActividades = () => {
         fetchAula();
     };
     useEffect(() => {
-        const fetchPropuestas = async () => {
-            const result = await axios.get("http://areco.gob.ar:9528/api/propuesta/all");
-            setPropuestas(result.data.data);
-        };
-        fetchPropuestas();
         const fetchSede = async () => {
             const result = await axios.get("http://areco.gob.ar:9528/api/sede/all");
             setSedes(result.data.data);
             setSedesSegunHorario(result.data.data);
         };
         fetchSede();
+        const fetchDependencias = async () => {
+            const result = await axios.get("http://areco.gob.ar:9528/api/dependencia/all");
+            setDependencias(result.data.data);
+        };
+        fetchDependencias();
     }, []);
 
     return (
@@ -202,7 +219,22 @@ const AdminActividades = () => {
                         {/* SECCION DE SELECCION DE COHORTE */}
 
                         <Col xs={12} sm={12} lg={6} className="seccion-actividad">
-                            <h2 className="texto-h2">Seleccionar Cohorte</h2>
+                            <h2 className="texto-h2">Crear Cohorte</h2>
+                            <Form.Group>
+                                <Form.Label>Dependencia</Form.Label>
+                                <Form.Control as="select" onChange={handleDependencia}>
+                                    <option selected disabled>
+                                        Seleccione una
+                                    </option>
+                                    {dependencias.map((dependencia) => {
+                                        return (
+                                            <option value={dependencia.idDependencia} key={dependencia.idDependencia}>
+                                                {dependencia.nombre}
+                                            </option>
+                                        );
+                                    })}
+                                </Form.Control>
+                            </Form.Group>
                             <Form.Group className="mt-4">
                                 <Form.Label>Propuesta</Form.Label>
                                 <Form.Control as="select" onChange={handlePropuesta}>
@@ -248,46 +280,21 @@ const AdminActividades = () => {
                                     })}
                                 </Form.Control>
                             </Form.Group>
-                            <Form.Group className="mt-3">
-                                <Form.Label>Edificio</Form.Label>
-                                <Form.Control as="select" onChange={handleChangeEdificio}>
-                                    <option selected disabled>
-                                        Seleccione una
-                                    </option>
-                                    {edificios.map((edificio) => {
-                                        return (
-                                            <option value={edificio.idEdificio} key={edificio.idEdificio}>
-                                                {edificio.nombre}
-                                            </option>
-                                        );
-                                    })}
-                                </Form.Control>
-                            </Form.Group>
-                            <Form.Group className="mt-3">
-                                <Form.Label>Aula</Form.Label>
-                                <Form.Control as="select" onChange={handleAula}>
-                                    <option selected disabled>
-                                        Seleccione una
-                                    </option>
-                                    {aulas.map((aula) => {
-                                        return (
-                                            <option value={aula.idAula} key={aula.idAula}>
-                                                {aula.nombre}
-                                            </option>
-                                        );
-                                    })}
-                                </Form.Control>
-                            </Form.Group>
-
-                            <Form.Group className="mt-3">
-                                <Form.Label>Fecha Inicio</Form.Label>
-                                <Form.Control type="date" onChange={handleFechaInicio} />
-                            </Form.Group>
-                            <Form.Group className="mt-3">
-                                <Form.Label>Fecha Fin</Form.Label>
-                                <Form.Control type="date" onChange={handleFechaFin} />
-                            </Form.Group>
-                            <Button className="mt-3 mb-2" variant="success" onClick={handleCreacionCohorte}>
+                            <Row lg={2}>
+                                <Col lg={6}>
+                                    <Form.Group className="mt-3">
+                                        <Form.Label>Fecha Inicio</Form.Label>
+                                        <Form.Control type="date" onChange={handleFechaInicio} />
+                                    </Form.Group>
+                                </Col>
+                                <Col lg={6}>
+                                    <Form.Group className="mt-3">
+                                        <Form.Label>Fecha Fin</Form.Label>
+                                        <Form.Control type="date" onChange={handleFechaFin} />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Button id="btn-crear-cohorte"className="mt-3 mb-2" variant="success" onClick={handleCreacionCohorte}>
                                 Crear Cohorte
                             </Button>
                         </Col>
@@ -295,117 +302,77 @@ const AdminActividades = () => {
                         {/* SECCION DE SELECCION DE DIAS Y HORARIOS */}
 
                         <Col xs={12} sm={12} lg={5} className="seccion-actividad">
-                            <Col xs={12} className="text-center">
-                                <h2 className="texto-h2">Seleccionar días y horarios</h2>
-                            </Col>
-                            <Row xs={1} sm={1} lg={2}>
-                                <Col xs={12} sm={6} lg={6}>
-                                    <InputGroup className="mt-4">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Sede</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleSedeHorario}>
-                                            <option selected disabled>
-                                                Seleccione una
+                            <h2 className="texto-h2">Asignar días y horarios</h2>
+
+                            <InputGroup className="mt-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>Edificio</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control as="select" onChange={handleEdificioHorario}>
+                                    <option selected disabled>
+                                        Seleccione una
+                                    </option>
+                                    {edificiosSegunHorario.map((edificio) => {
+                                        return (
+                                            <option value={edificio.idEdificio} key={edificio.idEdificio}>
+                                                {edificio.nombre}
                                             </option>
-                                            {sedesSegunHorario.map((sede) => {
-                                                return (
-                                                    <option value={sede.idSede} key={sede.idSede}>
-                                                        {sede.nombre}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                    <InputGroup className="mt-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Edificio</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleEdificioHorario}>
-                                            <option selected disabled>
-                                                Seleccione una
+                                        );
+                                    })}
+                                </Form.Control>
+                            </InputGroup>
+                            <InputGroup className="mt-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>Aula</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control as="select" onChange={handleAulaHorario}>
+                                    <option selected disabled>
+                                        Seleccione un dia
+                                    </option>
+                                    {aulasSegunHorario.map((aula) => {
+                                        return (
+                                            <option value={aula.idAula} key={aula.idAula}>
+                                                {aula.nombre}
                                             </option>
-                                            {edificiosSegunHorario.map((edificio) => {
-                                                return (
-                                                    <option value={edificio.idEdificio} key={edificio.idEdificio}>
-                                                        {edificio.nombre}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                    <InputGroup className="mt-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Aula</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleAulaHorario}>
-                                            <option selected disabled>
-                                                Seleccione un dia
+                                        );
+                                    })}
+                                </Form.Control>
+                            </InputGroup>
+
+                            <InputGroup className="mt-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>Actividad</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control as="select" onChange={handleActividadHorario}>
+                                    <option selected disabled>
+                                        Seleccione una
+                                    </option>
+                                    {actividadesSegunPropuesta.map((actividad) => {
+                                        return (
+                                            <option value={actividad.idActividad} key={actividad.idActividad}>
+                                                {actividad.nombre}
                                             </option>
-                                            {aulasSegunHorario.map((aula) => {
-                                                return (
-                                                    <option value={aula.idAula} key={aula.idAula}>
-                                                        {aula.nombre}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                </Col>
-                                <Col xs={12} sm={6} lg={6}>
-                                    <InputGroup className="mt-4">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Propuesta</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handlePropuestaHorario}>
-                                            <option selected disabled>
-                                                Seleccione una
+                                        );
+                                    })}
+                                </Form.Control>
+                            </InputGroup>
+                            <InputGroup className="mt-3">
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>Día:</InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control as="select" onChange={handleDiaChange}>
+                                    <option selected disabled>
+                                        Seleccione un dia
+                                    </option>
+                                    {DIAS_SEMANA.map((dia) => {
+                                        return (
+                                            <option value={dia} key={dia}>
+                                                {dia}
                                             </option>
-                                            {propuestas.map((propuesta) => {
-                                                return (
-                                                    <option value={propuesta.idPropuesta} key={propuesta.idPropuesta}>
-                                                        {propuesta.nombre}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                    <InputGroup className="mt-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Actividad</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleActividadHorario}>
-                                            <option selected disabled>
-                                                Seleccione una
-                                            </option>
-                                            {actividadesSegunPropuesta.map((actividad) => {
-                                                return (
-                                                    <option value={actividad.idActividad} key={actividad.idActividad}>
-                                                        {actividad.nombre}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                    <InputGroup className="mt-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Día:</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleDiaChange}>
-                                            <option selected disabled>
-                                                Seleccione un dia
-                                            </option>
-                                            {DIAS_SEMANA.map((dia) => {
-                                                return (
-                                                    <option value={dia} key={dia}>
-                                                        {dia}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                </Col>
-                            </Row>
+                                        );
+                                    })}
+                                </Form.Control>
+                            </InputGroup>
 
                             <Form.Group>
                                 <InputGroup className="mt-3">
@@ -439,27 +406,25 @@ const AdminActividades = () => {
                                 </InputGroup>
                             </Form.Group>
                             <Form.Group>
-                                <Col xs={12} sm={6} lg={6}>
-                                    <InputGroup className="mt-3">
-                                        <InputGroup.Prepend>
-                                            <InputGroup.Text>Modalidad</InputGroup.Text>
-                                        </InputGroup.Prepend>
-                                        <Form.Control as="select" onChange={handleChangeModalidad}>
-                                            <option selected disabled>
-                                                Seleccione una
-                                            </option>
-                                            {MODALIDADES.map((modalidad) => {
-                                                return (
-                                                    <option value={modalidad} key={modalidad}>
-                                                        {modalidad}
-                                                    </option>
-                                                );
-                                            })}
-                                        </Form.Control>
-                                    </InputGroup>
-                                </Col>
+                                <InputGroup className="mt-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>Modalidad</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control as="select" onChange={handleChangeModalidad}>
+                                        <option selected disabled>
+                                            Seleccione una
+                                        </option>
+                                        {MODALIDADES.map((modalidad) => {
+                                            return (
+                                                <option value={modalidad} key={modalidad}>
+                                                    {modalidad}
+                                                </option>
+                                            );
+                                        })}
+                                    </Form.Control>
+                                </InputGroup>
                             </Form.Group>
-                            <Button className="mt-3" variant="success" onClick={handleCreacionHorario}>
+                            <Button id="btn-crear-horario" className="mt-3" variant="success" onClick={handleCreacionHorario}>
                                 Asignar Horario
                             </Button>
                         </Col>
