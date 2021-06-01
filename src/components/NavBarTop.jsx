@@ -10,7 +10,7 @@ const NavBarTop = () => {
             <Navbar className="navbar" expand="md">
                 <Col xs={2} className="text-center ">
                     <Link id="nav-logo" to="/Admin">
-                        UNSAdA
+                        UnSAdA
                     </Link>
                 </Col>
                 <Col xs={6} className="justify-content-around">
@@ -26,11 +26,17 @@ const NavBarTop = () => {
                             <Nav.Item>
                                 <Link className="nav-link" to="/AdminActividades">
                                     <FaTasks className="mr-2" />
-                                    Administrar Actividades
+                                    Administrar Cohortes
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/AdminSeguimientos" eventKey="Mostrar Tabla Asistencia">
+                                <Link className="nav-link" to="/AdminAulasYHorarios">
+                                    <FaTasks className="mr-2" />
+                                    Asignar Aulas y Horarios
+                                </Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Link className="nav-link" to="/AdminSeguimientos">
                                     <AiOutlineBarChart className="mr-2" />
                                     Seguimientos
                                 </Link>

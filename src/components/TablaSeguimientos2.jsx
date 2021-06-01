@@ -93,20 +93,22 @@ const TablaSeguimientos2 = () => {
                 <Table className="mt-3" hidden={hiddenTable} responsive striped bordered variant="light">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Nombre y Apellido</th>
                             <th>Telefono</th>
                             <th>Correo Electronico</th>
+                            <th>Actividad</th>
+                            <th>Fecha de contacto</th>
                         </tr>
                     </thead>
                     <tbody>
                         {contactosEstrechos.map((persona, i) => {
                             return (
                                 <tr>
-                                    <td>{i}</td>
                                     <td>{persona.nombre}</td>
                                     <td>{persona.telefono}</td>
                                     <td>{persona.correoElectronico}</td>
+                                    <td>Matematica III</td>
+                                    <td>14/05/2021</td>
                                 </tr>
                             );
                         })}
