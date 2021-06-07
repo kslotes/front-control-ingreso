@@ -5,29 +5,25 @@ import {useState, useEffect} from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const AdminActividades = () => {
+const NuevoCohorte = () => {
 
+const DIAS_SEMANA = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
     const [sedes, setSedes] = useState([]);
-    const [aulas, setAulas] = useState([]);
 
-    let nombreActividad;
-
+    const [diaSemana, setDiaSemana] = useState();
     const [actividadesSegunPropuesta, setActividadesSegunPropuesta] = useState([]);
     const [edificiosSegunHorario, setEdificiosSegunHorario] = useState([]);
     const [edificios, setEdificios] = useState([]);
     const [propuestas, setPropuestas] = useState([]);
-    const [propuestaSegunHorario, setPropuestaSegunHorario] = useState();
     const [sede, setSede] = useState([]);
-    const [cohortes, setCohortes] = useState([]);
     const [cohorteSegunHorario, setCohorteSegunHorario] = useState();
-    const [sedeSegunHorario, setSedeSegunHorario] = useState();
     const [dependencias, setDependencias] = useState([]);
     const [sedesSegunHorario, setSedesSegunHorario] = useState([]);
     const [fechaInicio, setFechaInicio] = useState([]);
     const [fechaFin, setFechaFin] = useState([]);
     const [actividad, setActividad] = useState([]);
     const [actividadSegunHorario, setActividadSegunHorario] = useState("");
-  
+
 
     let cohorteJSON = {};
 
@@ -64,8 +60,13 @@ const AdminActividades = () => {
                     confirmButtonText: `Aceptar`,
                 })
             );
-      
-    
+
+
+    };
+
+    const handleDiaChange = (event) => {
+        console.log(`Soy el dia: ${event.target.value}`);
+        setDiaSemana(event.target.value);
     };
     const handleActividad = (event) => {
         setActividad(event.target.value);
@@ -127,11 +128,11 @@ const AdminActividades = () => {
         <Container fluid className="fondo">
             <NavBarTop />
             <Form>
-                    
+
                         {/* SECCION DE SELECCION DE COHORTE */}
 
                         <Col xs={12} sm={12} lg={5} className="seccion-container">
-                            <h2 className="texto-h2">Crear Cohorte</h2>
+                            <h2 className="texto-h2">Nuevo Cohorte</h2>
                             <Form.Group>
                                 <Form.Label>Dependencia</Form.Label>
                                 <Form.Control as="select" onChange={handleDependencia}>
@@ -206,17 +207,31 @@ const AdminActividades = () => {
                                     </Form.Group>
                                 </Col>
                             </Row>
+                            <Form.Group className="mt-3">
+                                <Form.Label>Dia: </Form.Label>
+                            <Form.Control as="select" onChange={handleDiaChange}>
+                                <option selected disabled>
+                                    Seleccione dia
+                                </option>
+                                {DIAS_SEMANA.map((dia) => {
+                                    return (
+                                        <option value={dia} key={dia}>
+                                            {dia}
+                                        </option>
+                                    );
+                                })}
+                            </Form.Control>
                             <Button id="btn-crear-cohorte" className="mt-3 mb-2" variant="success" onClick={handleCreacionCohorte}>
                                 Crear Cohorte
                             </Button>
+                        </Form.Group>
                         </Col>
-
                         {/* SECCION DE SELECCION DE DIAS Y HORARIOS */}
 
-                        
+
             </Form>
         </Container>
     );
 };
 
-export default AdminActividades;
+export default NuevoCohorte;

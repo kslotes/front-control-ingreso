@@ -71,7 +71,7 @@ const AdminAulasYHorarios = () => {
                 });
                 arrHorarios.push(horarioJSON);
                 console.log(arrHorarios);
-                setHiddenTable(false);
+            //     setHiddenTable(false);
             })
             .catch(() =>
                 Swal.fire({
@@ -210,7 +210,7 @@ const AdminAulasYHorarios = () => {
                 <Button id="btn-crear-horario" className="mt-3" variant="success" onClick={handleCreacionHorario}>
                     Asignar Horario
                 </Button>
-                <Table hidden={hiddenTable} striped bordered hover variant="light" className="mt-3">
+                {/* <Table hidden={hiddenTable} striped bordered hover variant="light" className="mt-3">
                     <thead>
                         <tr>
                             <th>Dia</th>
@@ -231,7 +231,7 @@ const AdminAulasYHorarios = () => {
                             );
                         })}
                     </tbody>
-                </Table>
+                </Table> */}
             </Col>
         </Container>
     );

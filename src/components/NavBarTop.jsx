@@ -18,26 +18,34 @@ const NavBarTop = () => {
                     <NavbarCollapse>
                         <Nav onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
                             <Nav.Item>
-                                <Link className="nav-link" to="/AdminDependencias">
-                                    <FaTasks className="mr-3" />
-                                    Crear Actividad
+                                <Link className="nav-link" to="/CrearActividad">
+                                    Nueva Actividad
+                                </Link>
+                            </Nav.Item>
+
+                            <Nav.Item>
+                                <Link className="nav-link" to="/ModificarActividad">
+                                    Modificar Actividad
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/AdminActividades">
-                                    <FaTasks className="mr-2" />
-                                    Administrar Cohortes
+                                <Link className="nav-link" to="/CrearCohorte">
+                                    Nuevo Cohorte
+                                </Link>
+                            </Nav.Item>
+
+                            <Nav.Item>
+                                <Link className="nav-link" to="/ModificarCohorte">
+                                    Modificar Cohorte
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Link className="nav-link" to="/AdminAulasYHorarios">
-                                    <FaTasks className="mr-2" />
                                     Asignar Aulas y Horarios
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Link className="nav-link" to="/AdminSeguimientos">
-                                    <AiOutlineBarChart className="mr-2" />
                                     Seguimientos
                                 </Link>
                             </Nav.Item>
