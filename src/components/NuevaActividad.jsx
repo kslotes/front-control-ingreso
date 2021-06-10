@@ -2,7 +2,7 @@ import {Container, Row, Col} from "react-bootstrap";
 import FormDependencias from "./FormDependencias";
 import NavBarTop from "./NavBarTop";
 
-const ModificarActividad = () => {
+const NuevaActividad = () => {
     return (
         <Container fluid className="fondo">
             <NavBarTop />
@@ -14,4 +14,4 @@ const ModificarActividad = () => {
     );
 };
 
-export default ModificarActividad;
+export default NuevaActividad;

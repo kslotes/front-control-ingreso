@@ -13,7 +13,7 @@ const NavBarTop = () => {
                         UnSAdA
                     </Link>
                 </Col>
-                <Col xs={6} className="justify-content-around">
+                <Col className="justify-content-around">
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <NavbarCollapse>
                         <Nav onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
