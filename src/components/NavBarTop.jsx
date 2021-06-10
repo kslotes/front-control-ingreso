@@ -18,25 +18,13 @@ const NavBarTop = () => {
                     <NavbarCollapse>
                         <Nav onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
                             <Nav.Item>
-                                <Link className="nav-link" to="/CrearActividad">
-                                    Nueva Actividad
-                                </Link>
-                            </Nav.Item>
-
-                            <Nav.Item>
-                                <Link className="nav-link" to="/ModificarActividad">
-                                    Modificar Actividad
+                                <Link className="nav-link" to="/AdministrarActividades">
+                                    Administrar Actividades
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/CrearCohorte">
-                                    Nuevo Cohorte
-                                </Link>
-                            </Nav.Item>
-
-                            <Nav.Item>
-                                <Link className="nav-link" to="/ModificarCohorte">
-                                    Modificar Cohorte
+                                <Link className="nav-link" to="/AdministrarCohortes">
+                                    Administrar Cohortes
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
