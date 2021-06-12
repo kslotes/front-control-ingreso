@@ -44,7 +44,7 @@ const FormDependencias = () => {
             confirmButtonColor: `#198754`
         }));
         console.log(actividadJson);
-        
+
     };
     useEffect(() => {
         const fetchDependencias = async () => {

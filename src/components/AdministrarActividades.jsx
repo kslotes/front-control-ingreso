@@ -1,49 +1,29 @@
-import {Container, Col, Row, Form, Table} from 'react-bootstrap'
+import {Container, Col, Row, Form, Button} from 'react-bootstrap'
 import NavBarTop from './NavBarTop';
 import {useState, useEffect} from 'react';
-import { URL_BASE, API_GET_ACTIVIDADES } from './Api.js'
+import {API_GET_ACTIVIDADES, API_GET_DEPENDENCIAS } from './Api.js'
 import axios from 'axios'
+import ModalNuevaActividad from './ModalNuevaActividad'
+import TablaActividades from './TablaActividades'
+import Swal from 'sweetalert2'
 const AdministrarActividades = () => {
     const [actividades, setActividades] = useState([])
+    const [actividad, setActividad] = useState();
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         axios.get(API_GET_ACTIVIDADES)
             .then(res => {
-                console.log(`Actividades:${res.data.data}`);
                 setActividades(res.data.data);
-                console.log(res.data.data);
-                console.log(Object.keys(res.data.data[0]))
             })
     }, [])
     return (
         <Container fluid className="fondo">
             <NavBarTop/>
             <Col className="seccion-container">
+                <ModalNuevaActividad show={show}/>
                 <h2 className="texto-h2">Listado de Actividades</h2>
-                <Table variant="light"striped bordered hover responsive>
-
-                    <thead>
-                        <tr>
-                            <th>Nombre Actividad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {actividades.map((actividad) => {
-                            return (
-                                <tr>
-                                    <td>
-                                        {actividad.nombre}
-                                    </td>
-                                    <td>
-                                        Modificar / Borrar
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </Table>
+                <TablaActividades actividades={actividades}/>
             </Col>
         </Container>
     )
