@@ -1,7 +1,9 @@
 import {Table, Button} from 'react-bootstrap'
 import Swal from 'sweetalert2'
+import './TablaCohortes.css'
 
 export default ({cohortes}) => {
+
     const handleModificar = async (idCohorte) => {
         console.log(`${idCohorte}`)
         console.log(`Click en modificar`);

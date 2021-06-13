@@ -1,29 +1,34 @@
-import {Table, Button} from 'react-bootstrap'
+import {Table, Button, Modal, Form} from 'react-bootstrap'
 import Swal from 'sweetalert2'
-
+import {URL_BASE} from './Api.js'
+import {useState} from 'react'
+import axios from 'axios'
 export default ({actividades}) => {
-    const handleModificar = async (nombre) => {
-        console.log(`${nombre}`)
-        console.log(`Click en modificar`);
-        const { value: nuevoNombre } = await Swal.fire({
-            icon: `info`,
-            title: `<strong>Modificar Actividad </strong>`,
-            input: 'text',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            inputLabel: `Ingrese nuevo nombre`,
-            inputPlaceholder: 'Ingrese nuevo nombre',
-            inputValidator: (value) => {
-                if(!value){
-                    return "Tienes que escribir algo!"
-                }
-            }
-        })
-        if(nuevoNombre){
-            Swal.fire(`Guardado!`, `El nuevo nombre es: ${nuevoNombre}`, 'success')
-        }
+
+    const [show, setShow] = useState(false);
+    const [nuevoNombre, setNuevoNombre] = useState();
+    const [idActividad, setIdActividad] = useState();
+    const [actividadAModificar, setActividadAModificar] = useState({});
+    const handleModificar = (actividad) => {
+        setShow(true);
+        setIdActividad(idActividad);
     }
-    const handleBorrar = () => {
+    const handleClose = () => setShow(false);
+    const handleSubmit = async () => {
+        try{
+            await axios.put(`${URL_BASE}/actividad/update/${idActividad}`, {nombre: nuevoNombre})
+            Swal.fire('Actividad modicada.', `Nuevo nombre: ${nuevoNombre}`, 'success')
+            setShow(false);
+        }
+        catch(err){
+            Swal.fire('Error al modificar, intente nuevamente', '', 'error')
+            console.error(err)
+            setShow(false);
+        }
+    };
+    const handleNuevoNombre = event => setNuevoNombre(event.target.value) 
+    const handleBorrar = (idActividad) => {
+    
         Swal.fire({
             title: `¿Estás seguro?`,
             text: `Esta acción no puede deshacerse.`,
@@ -34,32 +39,54 @@ export default ({actividades}) => {
         }).then((res) => {
             if(res.isConfirmed) {
                 Swal.fire('Actividad eliminada.', '', 'success')
+                axios.delete(`${URL_BASE}/actividad/delete/${idActividad}`)
             }
         })
     }
     return(
-        <Table variant="light"striped bordered hover responsive>
-            <thead>
-                <tr>
-                    <th>Nombre Actividad</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {actividades.map((actividad) => {
-                    return (
-                        <tr>
-                            <td>
-                                {actividad.nombre}
-                            </td>
-                            <td>
-                                <Button onClick={() => {handleModificar(actividad.nombre)}}>Modificar</Button>
-                                <Button onClick={handleBorrar}>Borrar</Button>
-                            </td>
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </Table>
+        <>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header >
+                  <Modal.Title>Modificar Actividad</Modal.Title>
+                </Modal.Header>
+            <Modal.Body>
+                    <Form.Group controlId="formDependenciaActividad" className="mt-2">
+                        <Form.Label>Nuevo nombre:</Form.Label>
+                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" onChange={handleNuevoNombre}/>
+                    </Form.Group>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                  Cerrar
+              </Button>
+              <Button variant="primary" onClick={handleSubmit}>
+                  Guardar Cambios
+              </Button>
+            </Modal.Footer>
+            </Modal>
+            <Table key={actividades} variant="light"striped bordered hover responsive>
+                <thead>
+                    <tr>
+                        <th>Nombre Actividad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {actividades.map((actividad) => {
+                        return (
+                            <tr key={actividad.idActividad}>
+                                <td>
+                                    {actividad.nombre}
+                                </td>
+                                <td>
+                                    <Button onClick={() => {handleModificar(actividad)}}>Modificar</Button>
+                                    <Button onClick={() => {handleBorrar(actividad.idActividad)}}>Borrar</Button>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </Table>
+        </>
     )
 }

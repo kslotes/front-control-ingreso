@@ -1,15 +1,13 @@
-import {Container, Col, Row, Form, Button} from 'react-bootstrap'
+import {Container, Col} from 'react-bootstrap'
 import NavBarTop from './NavBarTop';
 import {useState, useEffect} from 'react';
-import {API_GET_ACTIVIDADES, API_GET_DEPENDENCIAS } from './Api.js'
+import {API_GET_ACTIVIDADES} from './Api.js'
 import axios from 'axios'
 import ModalNuevaActividad from './ModalNuevaActividad'
 import TablaActividades from './TablaActividades'
-import Swal from 'sweetalert2'
+import './AdministrarActividades.css'
 const AdministrarActividades = () => {
     const [actividades, setActividades] = useState([])
-    const [actividad, setActividad] = useState();
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
         axios.get(API_GET_ACTIVIDADES)
@@ -21,7 +19,7 @@ const AdministrarActividades = () => {
         <Container fluid className="fondo">
             <NavBarTop/>
             <Col className="seccion-container">
-                <ModalNuevaActividad show={show}/>
+                <ModalNuevaActividad />
                 <h2 className="texto-h2">Listado de Actividades</h2>
                 <TablaActividades actividades={actividades}/>
             </Col>

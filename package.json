@@ -11,6 +11,7 @@
     "basic-react-timepicker": "^1.0.0",
     "bootstrap": "^5.0.1",
     "bootstrap-icons": "^1.5.0",
+    "nvm": "^0.0.4",
     "prop-types": "^15.7.2",
     "react-axios": "^2.0.5",
     "react-bootstrap": "^1.5.2",
@@ -37,6 +38,10 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "type": "module",
+  "engines": {
+      "node": "^14"
   },
   "browserslist": {
     "production": [
