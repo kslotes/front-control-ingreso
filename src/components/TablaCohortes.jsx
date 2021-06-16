@@ -1,29 +1,22 @@
-import {Table, Button} from 'react-bootstrap'
+import {Table, Button, Form, Modal} from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import './TablaCohortes.css'
+import {useState} from 'react';
 
 export default ({cohortes}) => {
-
-    const handleModificar = async (idCohorte) => {
-        console.log(`${idCohorte}`)
-        console.log(`Click en modificar`);
-        const { value: nuevoIdCohorte } = await Swal.fire({
-            icon: `info`,
-            title: `<strong>Modificar Cohorte </strong>`,
-            input: 'text',
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            inputLabel: `Ingrese nuevo id`,
-            inputPlaceholder: 'Ingrese nuevo id',
-            inputValidator: (value) => {
-                if(!value){
-                    return "Tienes que escribir algo!"
-                }
-            }
-        })
-        if(nuevoIdCohorte){
-            Swal.fire(`Guardado!`, `El nuevo nombre es: ${nuevoIdCohorte}`, 'success')
-        }
+    const [show, setShow] = useState(false);
+    const [idCohorte, setIdCohorte] = useState();
+    const [nombreCohorte, setNombreCohorte] = useState("Nombre descriptivo");
+    const [fechaInicioCohorte, setFechaInicioCohorte] = useState();
+    const [fechaFinCohorte, setFechaFinCohorte] = useState();
+    const handleClose = () => setShow(false)
+    const handleSubmit = () => {}
+    const handleNuevoCohorte = event => setIdCohorte(event.target.value) 
+    const handleModificar = (cohorte) => {
+        setShow(true);
+        setIdCohorte(cohorte.idCohorte);
+        setFechaInicioCohorte(cohorte.fechaInicio);
+        setFechaFinCohorte(cohorte.fechaFin);
     }
     const handleBorrar = () => {
         Swal.fire({
@@ -40,6 +33,38 @@ export default ({cohortes}) => {
         })
     }
     return(
+        <>
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header >
+                  <Modal.Title>Modificar Cohorte</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="formIdCohorte" className="mt-2">
+                        <Form.Label>ID Cohorte</Form.Label>
+                        <Form.Control type="text" placeholder="ID Cohorte" value={idCohorte} onChange={handleNuevoCohorte}/>
+                    </Form.Group>
+                    <Form.Group controlId="formNombreCohorte" className="mt-2">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control type="text" value={nombreCohorte} placeholder="Ingrese nuevo nombre" />
+                    </Form.Group>
+                    <Form.Group controlId="form" className="mt-2">
+                        <Form.Label>Fecha Inicio</Form.Label>
+                        <Form.Control type="date" value={fechaInicioCohorte}/>
+                    </Form.Group>
+                    <Form.Group controlId="form" className="mt-2">
+                        <Form.Label>Fecha Fin</Form.Label>
+                        <Form.Control type="date"value={fechaFinCohorte}/>
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                      Cerrar
+                  </Button>
+                  <Button variant="primary" onClick={handleSubmit}>
+                      Guardar Cambios
+                  </Button>
+                </Modal.Footer>
+            </Modal>
         <Table variant="light"striped bordered hover responsive>
 
             <thead>
@@ -66,7 +91,7 @@ export default ({cohortes}) => {
                                 {cohorte.fechaFin}
                             </td>
                             <td>
-                                <Button onClick={() => {handleModificar(cohorte.idCohorte)}}>Modificar</Button>
+                                <Button onClick={() => {handleModificar(cohorte)}}>Modificar</Button>
                                 <Button onClick={() => {handleBorrar(cohorte.idCohorte)}}>Borrar</Button>
                             </td>
                         </tr>
@@ -74,5 +99,6 @@ export default ({cohortes}) => {
                 })}
             </tbody>
         </Table>
+        </>
     )
 }

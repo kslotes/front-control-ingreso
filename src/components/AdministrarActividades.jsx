@@ -19,8 +19,8 @@ const AdministrarActividades = () => {
         <Container fluid className="fondo">
             <NavBarTop/>
             <Col className="seccion-container">
-                <ModalNuevaActividad />
                 <h2 className="texto-h2">Listado de Actividades</h2>
+                <ModalNuevaActividad />
                 <TablaActividades actividades={actividades}/>
             </Col>
         </Container>

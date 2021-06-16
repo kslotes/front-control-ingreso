@@ -8,10 +8,12 @@ export default ({actividades}) => {
     const [show, setShow] = useState(false);
     const [nuevoNombre, setNuevoNombre] = useState();
     const [idActividad, setIdActividad] = useState();
+    const [nombreActividad, setNombreActividad] = useState();
     const [actividadAModificar, setActividadAModificar] = useState({});
     const handleModificar = (actividad) => {
         setShow(true);
-        setIdActividad(idActividad);
+        setIdActividad(actividad.idActividad);
+        setNombreActividad(actividad.nombreActividad);
     }
     const handleClose = () => setShow(false);
     const handleSubmit = async () => {
@@ -49,25 +51,27 @@ export default ({actividades}) => {
                 <Modal.Header >
                   <Modal.Title>Modificar Actividad</Modal.Title>
                 </Modal.Header>
-            <Modal.Body>
+                <Modal.Body>
                     <Form.Group controlId="formDependenciaActividad" className="mt-2">
-                        <Form.Label>Nuevo nombre:</Form.Label>
-                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" onChange={handleNuevoNombre}/>
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" value={nombreActividad} onChange={handleNuevoNombre}/>
                     </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                  Cerrar
-              </Button>
-              <Button variant="primary" onClick={handleSubmit}>
-                  Guardar Cambios
-              </Button>
-            </Modal.Footer>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                      Cerrar
+                  </Button>
+                  <Button variant="primary" onClick={handleSubmit}>
+                      Guardar Cambios
+                  </Button>
+                </Modal.Footer>
             </Modal>
-            <Table key={actividades} variant="light"striped bordered hover responsive>
+            <Table key={actividades} variant="light" striped bordered responsive>
                 <thead>
                     <tr>
                         <th>Nombre Actividad</th>
+                        <th>Propuesta</th>
+                        <th>Dependencia</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -76,7 +80,14 @@ export default ({actividades}) => {
                         return (
                             <tr key={actividad.idActividad}>
                                 <td>
-                                    {actividad.nombre}
+                                    {actividad.nombreActividad}
+                                </td>
+
+                                <td>
+                                    {actividad.nombrePropuesta}
+                                </td>
+                                <td>
+                                    {actividad.nombreDependencia}
                                 </td>
                                 <td>
                                     <Button onClick={() => {handleModificar(actividad)}}>Modificar</Button>

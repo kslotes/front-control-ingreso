@@ -49,7 +49,7 @@ export default () => {
     }, [])
     return (
         <>
-          <Button variant="primary" onClick={handleShow}>
+          <Button className="mb-3" variant="primary" onClick={handleShow}>
               Nueva Actividad
           </Button>
 
