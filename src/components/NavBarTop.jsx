@@ -28,8 +28,18 @@ const NavBarTop = () => {
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/AdminAulasYHorarios">
-                                    Asignar Aulas y Horarios
+                                <Link className="nav-link" to="/AdministrarAulas">
+                                    Administrar Aulas
+                                </Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Link className="nav-link" to="/CrearHorarios">
+                                    Crear Horarios
+                                </Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Link className="nav-link" to="/AsignarAulas">
+                                    Asignar Aulas
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
