@@ -11,10 +11,7 @@ const AdministrarCohortes = () => {
     useEffect(() => {
         axios.get(API_GET_COHORTES)
             .then(res => {
-                console.log(`Cohortes:${res.data.data}`);
                 setCohortes(res.data.data);
-                console.log(res.data.data);
-                console.log(Object.keys(res.data.data[0]))
             })
     }, [])
     return (

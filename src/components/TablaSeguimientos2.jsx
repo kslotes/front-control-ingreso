@@ -50,7 +50,7 @@ const TablaSeguimientos2 = () => {
 
     const handleSeguimiento = () => {
         axios.get(`http://areco.gob.ar:9528/api/persona/find/persona_sesion/${fechaInicio}/${fechaFin}/${persona.idPersona}`).then((res) => {
-            setContactosEstrechos(res.data.data);
+            setContactosEstrechos(res.data.personas);
             console.log(res.data.data);
             if (contactosEstrechos) {
                 setHiddenTable(false);
@@ -96,7 +96,8 @@ const TablaSeguimientos2 = () => {
                             <th>Nombre y Apellido</th>
                             <th>Telefono</th>
                             <th>Correo Electronico</th>
-                            <th>Actividad</th>
+                            <th>Materia</th>
+                            <th>Carrera</th>
                             <th>Fecha de contacto</th>
                         </tr>
                     </thead>
@@ -106,9 +107,10 @@ const TablaSeguimientos2 = () => {
                                 <tr>
                                     <td>{persona.nombre}</td>
                                     <td>{persona.telefono}</td>
-                                    <td>{persona.correoElectronico}</td>
-                                    <td>Matematica III</td>
-                                    <td>14/05/2021</td>
+                                    <td>{persona.mail}</td>
+                                    <td>{persona.nombreActividad}</td>
+                                    <td>{persona.nombrePropuesta}</td>
+                                    <td>{(persona.fechaCarga).slice(0, 10)}</td>
                                 </tr>
                             );
                         })}
