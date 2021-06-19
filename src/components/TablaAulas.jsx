@@ -9,6 +9,8 @@ export default ({aulas}) => {
     const [show, setShow] = useState(false);
     const [nombreAula, setNombreAula] = useState();
     const [capacidadAula, setCapacidadAula] = useState();
+
+
     const [idAula, setIdAula] = useState();
     const [edificioAula, setEdificioAula] = useState();
     

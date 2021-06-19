@@ -1,0 +1,49 @@
+import {Table, Button} from 'react-bootstrap'
+
+export default ({horarios}) => {
+
+    console.log(horarios);
+    const handleModificar = () => {}
+    const handleBorrar = () => {}
+    return (
+        <>
+            <Table key={horarios} variant="light" striped bordered responsive>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Modalidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {horarios.map((horario) => {
+                        return (
+                            <tr key={horario.idHorario}>
+                                <td>
+                                    {horario.idHorario}
+                                </td>
+
+                                <td>
+                                    {horario.horaInicio}
+                                </td>
+                                <td>
+                                    {horario.horaFin}
+                                </td>
+                                <td>
+                                    {horario.nombre}
+                                </td>
+                                <td>
+                                    <Button onClick={() => {handleModificar(horario)}}>Modificar</Button>
+                                    <Button onClick={() => {handleBorrar(horario.idHorario)}}>Borrar</Button>
+                                </td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </Table>
+        </>
+    )
+}
+

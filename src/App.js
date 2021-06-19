@@ -6,7 +6,7 @@ import AdministrarActividades from './components/AdministrarActividades';
 import AdministrarCohortes from './components/AdministrarCohortes';
 import AdministrarAulas from './components/AdministrarAulas'
 import AsignarAulas from './components/AsignarAulas' 
-import CrearHorarios from './components/CrearHorarios';
+import AdministrarHorarios from './components/AdministrarHorarios';
 import './App.css';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
                         <Route exact path="/AsignarAulas" component={AsignarAulas} />
                         <Route exact path="/AdministrarCohortes" component={AdministrarCohortes} />
                         <Route exact path="/AdminSeguimientos" component={AdminSeguimientos} />
-                        <Route exact path="/CrearHorarios" component={CrearHorarios} />
+                        <Route exact path="/AdministrarHorarios" component={AdministrarHorarios} />
                         <Route exact path="/Admin" component={AdminHome} />
                         <Route path="/" component={AdminHome} />
                   </Switch>

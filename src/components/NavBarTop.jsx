@@ -2,8 +2,6 @@ import {Navbar, Nav, Row, Col} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import "./NavBarTop.css";
-import {FaTasks} from "react-icons/fa";
-import {AiOutlineBarChart} from "react-icons/ai";
 const NavBarTop = () => {
     return (
         <Row>
@@ -33,7 +31,7 @@ const NavBarTop = () => {
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/CrearHorarios">
+                                <Link className="nav-link" to="/AdministrarHorarios">
                                     Administrar Horarios
                                 </Link>
                             </Nav.Item>
