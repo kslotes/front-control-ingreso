@@ -55,12 +55,15 @@ const TablaSeguimientos2 = () => {
             if (contactosEstrechos) {
                 setHiddenTable(false);
             }
-        }).catch(() => Swal.fire({
-            title: `¡Oops!`,
-            text: `Hubo un error en la consulta, intente nuevamente.`,
-            icon: `error`,
-            confirmButtonText: `Entiendo`,
-        }));
+        }).catch((err) => {
+            Swal.fire({
+                title: `¡Oops!`,
+                text: `Hubo un error en la consulta, intente nuevamente.`,
+                icon: `error`,
+                confirmButtonText: `Entiendo`,
+            })
+            console.error(err);
+        });
     };
     return (
         <div className="d-flex flex-column align-items-center">

@@ -34,7 +34,7 @@ const NavBarTop = () => {
                             </Nav.Item>
                             <Nav.Item>
                                 <Link className="nav-link" to="/CrearHorarios">
-                                    Crear Horarios
+                                    Administrar Horarios
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>

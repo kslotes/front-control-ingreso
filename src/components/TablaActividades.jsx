@@ -9,7 +9,6 @@ export default ({actividades}) => {
     const [nuevoNombre, setNuevoNombre] = useState();
     const [idActividad, setIdActividad] = useState();
     const [nombreActividad, setNombreActividad] = useState();
-    const [actividadAModificar, setActividadAModificar] = useState({});
     const handleModificar = (actividad) => {
         setShow(true);
         setIdActividad(actividad.idActividad);

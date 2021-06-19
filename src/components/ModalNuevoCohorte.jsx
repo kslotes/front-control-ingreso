@@ -11,9 +11,7 @@ export default () => {
     const [sedes, setSedes] = useState([]);
     const [selectedSede, setSelectedSede] = useState();
     const [dependencias, setDependencias] = useState([]);
-    const [selectedDependencia, setSelectedDependencia] = useState();
     const [propuestas, setPropuestas] = useState([]);
-    const [selectedPropuesta, setSelectedPropuesta] = useState();
     const [actividades, setActividades] = useState([]);
     const [selectedActividad, setSelectedActividad] = useState();
     const [selectedFechaInicio, setSelectedFechaInicio] = useState();
@@ -27,10 +25,8 @@ export default () => {
     
     const handleSelectSede = (event) => setSelectedSede(event.target.value);
     const handleSelectDependencia = async (event) => {
-        setSelectedDependencia(event.target.value);
-
         try{
-             const res = await axios.get(`${URL_BASE}/propuesta/find/dependencia/${event.target.value}`)
+            const res = await axios.get(`${URL_BASE}/propuesta/find/dependencia/${event.target.value}`)
             setPropuestas(res.data.data);
         }
         catch(err) {
@@ -39,25 +35,28 @@ export default () => {
     }
 
     const handleSelectPropuesta = async (event) => {
-        setSelectedPropuesta(event.target.value)
         try{
             const res = await axios.get(`${URL_BASE}/actividad/find/propuesta/${event.target.value}`)
             setActividades(res.data.data);
         }
         catch(err) {
-            console.log(err);
+            console.error(err);
         }
     }
     const handleSelectActividad = (event) => setSelectedActividad(event.target.value);
-    const handleSelectedFechaInicio = (event) => setSelectedFechaInicio(event.target.value); 
+    const handleSelectedFechaInicio = (event) => {
+        console.log('Fecha inicio: ', event.target.value)
+        setSelectedFechaInicio(event.target.value); 
+    }
     const handleSelectedFechaFin = (event) => setSelectedFechaFin(event.target.value); 
     const handleSubmit = async () => {
         console.log(`Sede: ${selectedSede}, Actividad: ${selectedActividad}, Nombre: ${nombre}, FechaInicio: ${selectedFechaInicio}, FechaFin: ${selectedFechaFin}`)
         try{
-            await axios.post(`${URL_BASE}`, {})
+            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
             Swal.fire('Cohorte Creado!', '', 'success')
         }
         catch(err) {
+            console.error(err);
             Swal.fire('El cohorte no se pudo crear. Intente nuevamente', '', 'error')
         }
         finally {
@@ -99,7 +98,7 @@ export default () => {
             <Modal.Body>
                     <Form.Group controlId="formNombreCohorte" className="mt-2">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control onChange={handleNombre} type="text" placeholder="Ingrese nombre" required/>
+                        <Form.Control onChange={handleNombre} autoComplete="off" type="text" placeholder="Ingrese nombre" required/>
                     </Form.Group>
                     <Form.Group controlId="formSedeCohorte"className="mt-2">
                         <Form.Label>Sede</Form.Label>

@@ -2,6 +2,8 @@ import {Table, Button, Form, Modal} from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import './TablaCohortes.css'
 import {useState} from 'react';
+import axios from 'axios'
+import {URL_BASE} from './Api.js'
 
 export default ({cohortes}) => {
     const [show, setShow] = useState(false);
@@ -9,16 +11,35 @@ export default ({cohortes}) => {
     const [nombreCohorte, setNombreCohorte] = useState("Nombre descriptivo");
     const [fechaInicioCohorte, setFechaInicioCohorte] = useState();
     const [fechaFinCohorte, setFechaFinCohorte] = useState();
+
     const handleClose = () => setShow(false)
-    const handleSubmit = () => {}
-    const handleNuevoCohorte = event => setIdCohorte(event.target.value) 
+    const handleSubmitModificar = async () => {
+        try{
+            await axios.put(`${URL_BASE}/cohorte/update/${idCohorte}`, {fechaInicio: fechaInicioCohorte, fechaFin: fechaFinCohorte})
+            Swal.fire('Cohorte modificado', '', 'success')
+        }
+        catch(err) {
+            Swal.fire('No se modificó el cohorte', '', 'error')
+            console.error(err);
+        }
+        finally{
+            setShow(false);
+        }
+    }
+
+
+    const handleNombreCohorte = event => setNombreCohorte(event.target.value);
+    const handleFechaInicioCohorte = event => setFechaInicioCohorte(event.target.value);
+    const handleFechaFinCohorte = event => setFechaFinCohorte(event.target.value);
+
     const handleModificar = (cohorte) => {
         setShow(true);
+        setNombreCohorte(cohorte.nombreCohorte);
         setIdCohorte(cohorte.idCohorte);
         setFechaInicioCohorte(cohorte.fechaInicio);
         setFechaFinCohorte(cohorte.fechaFin);
     }
-    const handleBorrar = () => {
+    const handleBorrar = (idCohorte) => {
         Swal.fire({
             title: `¿Estás seguro?`,
             text: `Esta acción no puede deshacerse.`,
@@ -28,7 +49,12 @@ export default ({cohortes}) => {
             confirmButtonText: 'Si',
         }).then((res) => {
             if(res.isConfirmed) {
-                Swal.fire('Actividad eliminada.', '', 'success')
+                axios.delete(`${URL_BASE}/cohorte/delete/${idCohorte}`)
+                    .then(() => Swal.fire('Cohorte eliminado', '', 'success'))
+                    .catch((err) => {
+                        Swal.fire('No se eliminó el cohorte', '', 'error')
+                        console.error(err)
+                    });
             }
         })
     }
@@ -41,26 +67,26 @@ export default ({cohortes}) => {
                 <Modal.Body>
                     <Form.Group controlId="formIdCohorte" className="mt-2">
                         <Form.Label>ID Cohorte</Form.Label>
-                        <Form.Control type="text" placeholder="ID Cohorte" value={idCohorte} onChange={handleNuevoCohorte}/>
+                        <Form.Control type="text" placeholder="ID Cohorte" value={idCohorte} />
                     </Form.Group>
                     <Form.Group controlId="formNombreCohorte" className="mt-2">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text" value={nombreCohorte} placeholder="Ingrese nuevo nombre" />
+                        <Form.Control type="text" value={nombreCohorte} placeholder="Ingrese nuevo nombre" onChange={handleNombreCohorte} autoComplete="off" />
                     </Form.Group>
                     <Form.Group controlId="form" className="mt-2">
                         <Form.Label>Fecha Inicio</Form.Label>
-                        <Form.Control type="date" value={fechaInicioCohorte}/>
+                        <Form.Control type="date" value={fechaInicioCohorte} onChange={handleFechaInicioCohorte}/>
                     </Form.Group>
                     <Form.Group controlId="form" className="mt-2">
                         <Form.Label>Fecha Fin</Form.Label>
-                        <Form.Control type="date"value={fechaFinCohorte}/>
+                        <Form.Control type="date"value={fechaFinCohorte} onChange={handleFechaFinCohorte}/>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                       Cerrar
                   </Button>
-                  <Button variant="primary" onClick={handleSubmit}>
+                  <Button variant="primary" onClick={handleSubmitModificar}>
                       Guardar Cambios
                   </Button>
                 </Modal.Footer>

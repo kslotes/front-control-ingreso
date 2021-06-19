@@ -3,7 +3,6 @@ import {useState, useEffect} from 'react'
 import {API_GET_DEPENDENCIAS, URL_BASE} from './Api.js'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import './ModalNuevaActividad.css'
 export default () => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -23,6 +22,7 @@ export default () => {
             Swal.fire('Actividad Creada!', '', 'success')
         }
         catch(err) {
+            console.error(err);
             Swal.fire('La actividad no se pudo crear. Intente nuevamente', '', 'error')
         }
         finally {

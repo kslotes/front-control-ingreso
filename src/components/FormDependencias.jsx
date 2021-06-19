@@ -36,13 +36,16 @@ const FormDependencias = () => {
             confirmButtonText: `Listo`,
             confirmButtonColor: `#198754`
         }))
-        .catch(() => Swal.fire({
-            title: `Error`,
-            text: `Revise los datos e intente nuevamente.`,
-            icon: `error`,
-            confirmButtonText: `Listo`,
-            confirmButtonColor: `#198754`
-        }));
+        .catch(() => {
+            Swal.fire({
+                title: `Error`,
+                text: `Revise los datos e intente nuevamente.`,
+                icon: `error`,
+                confirmButtonText: `Listo`,
+                confirmButtonColor: `#198754`
+            })
+            console.error(err);
+        });
         console.log(actividadJson);
 
     };

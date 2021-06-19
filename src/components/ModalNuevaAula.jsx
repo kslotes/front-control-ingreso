@@ -9,12 +9,10 @@ export default () => {
     const [nombre, setNombre] = useState();
     const [capacidad, setCapacidad] = useState();
     const [edificios, setEdificios] = useState([]);
-    const [idSede, setIdSede] = useState();
     const [idEdificio, setIdEdificio] = useState();
     const [sedes, setSedes] = useState([]);
     
     const handleSede = async (event) => {
-        setIdSede(event.target.value)
         try{
             const res = await axios.get(`${URL_BASE}/edificio/sede/find/${event.target.value}`)
             setEdificios(res.data.data);
@@ -29,7 +27,26 @@ export default () => {
     const handleNombre = (event) => setNombre(event.target.value);
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
-    const handleSubmit = () => {}
+    const handleSubmit = async () => {
+        const JSONCrearAula = {
+            capacidadConAforo: capacidad,
+            edificio: {
+                idEdificio: idEdificio
+            },
+            nombre: nombre
+        }
+        try {
+            await axios.post(`${URL_BASE}/aula/create`, JSONCrearAula)
+            Swal.fire('Aula Creada!', 'Actualice la pagina para ver los cambios.', 'success')
+        }
+        catch(err){
+            Swal.fire('No se pudo crear el aula.', '', 'error')
+            console.error(err);
+        }
+        finally{
+            setShow(false);
+        }
+    }
     
     useEffect(() => {
         const fetchSedes = async () => {
@@ -56,11 +73,11 @@ export default () => {
                 <Modal.Body>
                     <Form.Group controlId="formAulaNombre" className="mt-2">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text" onChange={handleNombre} placeholder="Ingrese nombre"/>
+                        <Form.Control type="text" onChange={handleNombre} autoComplete="off" placeholder="Ingrese nombre"/>
                     </Form.Group>
                     <Form.Group controlId="formAulaCapacidad" className="mt-2">
                         <Form.Label>Capacidad</Form.Label>
-                        <Form.Control type="text" onChange={handleCapacidad} placeholder="Ingrese capacidad del aula"/>
+                        <Form.Control type="number" onChange={handleCapacidad} autoComplete="off" placeholder="Ingrese capacidad del aula"/>
                     </Form.Group>
                     <Form.Group controlId="formSedeAula" className="mt-2">
                         <Form.Label>Sede</Form.Label>
