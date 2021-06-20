@@ -34,6 +34,7 @@ export default ({showModal}) => {
             Swal.fire('Horario creado!', '', 'success')
         }
         catch(err) {
+            Swal.fire('No se pudo crear el horario', '', 'error')
             console.error(err);
         }
         finally {

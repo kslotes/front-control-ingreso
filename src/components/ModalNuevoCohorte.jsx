@@ -52,7 +52,7 @@ export default () => {
     const handleSubmit = async () => {
         console.log(`Sede: ${selectedSede}, Actividad: ${selectedActividad}, Nombre: ${nombre}, FechaInicio: ${selectedFechaInicio}, FechaFin: ${selectedFechaFin}`)
         try{
-            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
+            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {nombre: nombre, fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
             Swal.fire('Cohorte Creado!', '', 'success')
         }
         catch(err) {

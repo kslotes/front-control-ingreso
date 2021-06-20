@@ -53,7 +53,7 @@ export default ({actividades}) => {
                 <Modal.Body>
                     <Form.Group controlId="formDependenciaActividad" className="mt-2">
                         <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" value={nombreActividad} onChange={handleNuevoNombre}/>
+                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" defaultValue={nombreActividad} onChange={handleNuevoNombre}/>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>

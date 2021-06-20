@@ -95,8 +95,8 @@ export default ({cohortes}) => {
 
             <thead>
                 <tr>
-                    <th>ID Cohorte</th>
                     <th>Nombre</th>
+                    <th>Sede</th>
                     <th>Fecha Inicio</th>
                     <th>Fecha Fin</th>
                     <th>Acciones</th>
@@ -109,10 +109,10 @@ export default ({cohortes}) => {
                     return (
                         <tr>
                             <td>
-                                {cohorte.idCohorte}
+                                {cohorte.nombreCohorte}
                             </td>
                             <td>
-                                {cohorte.nombreCohorte}
+                                {cohorte.sede ? cohorte.sede["nombre"] : "No tiene sede asignada"}
                             </td>
                             <td>
                                 {cohorte.fechaInicio}
