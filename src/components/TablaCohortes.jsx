@@ -15,7 +15,7 @@ export default ({cohortes}) => {
     const handleClose = () => setShow(false)
     const handleSubmitModificar = async () => {
         try{
-            await axios.put(`${URL_BASE}/cohorte/update/${idCohorte}`, {fechaInicio: fechaInicioCohorte, fechaFin: fechaFinCohorte})
+            await axios.put(`${URL_BASE}/cohorte/update/${idCohorte}`, {nombreCohorte: nombreCohorte, fechaInicio: fechaInicioCohorte, fechaFin: fechaFinCohorte})
             Swal.fire('Cohorte modificado', '', 'success')
         }
         catch(err) {
@@ -96,6 +96,7 @@ export default ({cohortes}) => {
             <thead>
                 <tr>
                     <th>ID Cohorte</th>
+                    <th>Nombre</th>
                     <th>Fecha Inicio</th>
                     <th>Fecha Fin</th>
                     <th>Acciones</th>
@@ -109,6 +110,9 @@ export default ({cohortes}) => {
                         <tr>
                             <td>
                                 {cohorte.idCohorte}
+                            </td>
+                            <td>
+                                {cohorte.nombreCohorte}
                             </td>
                             <td>
                                 {cohorte.fechaInicio}

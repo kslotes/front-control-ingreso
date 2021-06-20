@@ -1,6 +1,8 @@
 import {Table, Button} from 'react-bootstrap'
+import {useState} from 'react'
 
 export default ({horarios}) => {
+
 
     console.log(horarios);
     const handleModificar = () => {}
@@ -11,6 +13,8 @@ export default ({horarios}) => {
                 <thead>
                     <tr>
                         <th>id</th>
+                        <th>Pertenece a cursada:</th>
+                        <th>Dia</th>
                         <th>Hora Inicio</th>
                         <th>Hora Fin</th>
                         <th>Modalidad</th>
@@ -23,6 +27,11 @@ export default ({horarios}) => {
                             <tr key={horario.idHorario}>
                                 <td>
                                     {horario.idHorario}
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                    {horario.dia}
                                 </td>
 
                                 <td>
