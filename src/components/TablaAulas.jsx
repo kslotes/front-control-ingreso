@@ -92,6 +92,8 @@ export default ({aulas}) => {
                 <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Sede</th>
+                        <th>Edificio</th>
                         <th>Capacidad</th>
                         <th>Acciones</th>
                     </tr>
@@ -101,6 +103,8 @@ export default ({aulas}) => {
                         return (
                             <tr key={aula.idAula}>
                                 <td>{aula.nombre}</td>
+                                <td>{aula.nombreSede}</td>
+                                <td>{aula.nombreEdificio}</td>
                                 <td>{aula.capacidadConAforo} personas</td>
                                 <td>
                                     <Button onClick={() => {handleModificar(aula)}}>Modificar</Button>

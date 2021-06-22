@@ -45,14 +45,13 @@ export default () => {
     }
     const handleSelectActividad = (event) => setSelectedActividad(event.target.value);
     const handleSelectedFechaInicio = (event) => {
-        console.log('Fecha inicio: ', event.target.value)
         setSelectedFechaInicio(event.target.value); 
     }
     const handleSelectedFechaFin = (event) => setSelectedFechaFin(event.target.value); 
     const handleSubmit = async () => {
         console.log(`Sede: ${selectedSede}, Actividad: ${selectedActividad}, Nombre: ${nombre}, FechaInicio: ${selectedFechaInicio}, FechaFin: ${selectedFechaFin}`)
         try{
-            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {nombre: nombre, fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
+            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {nombreCohorte: nombre, fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
             Swal.fire('Cohorte Creado!', '', 'success')
         }
         catch(err) {

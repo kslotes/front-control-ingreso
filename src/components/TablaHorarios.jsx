@@ -2,10 +2,13 @@ import {Table, Button} from 'react-bootstrap'
 import {useState} from 'react'
 
 export default ({horarios}) => {
+    
+    const [show, setShow] = useState(false);
 
+    const handleModificar = () => {
+        setShow(true);
+    }
 
-    console.log(horarios);
-    const handleModificar = () => {}
     const handleBorrar = () => {}
     return (
         <>
