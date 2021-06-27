@@ -1,6 +1,5 @@
 import {Table, Button, Form, Modal} from 'react-bootstrap'
 import Swal from 'sweetalert2'
-import './TablaCohortes.css'
 import {useState} from 'react';
 import axios from 'axios'
 import {URL_BASE} from './Api.js'
@@ -8,9 +7,12 @@ import {URL_BASE} from './Api.js'
 export default ({cohortes}) => {
     const [show, setShow] = useState(false);
     const [idCohorte, setIdCohorte] = useState();
-    const [nombreCohorte, setNombreCohorte] = useState("Nombre descriptivo");
+    const [nombreCohorte, setNombreCohorte] = useState();
     const [fechaInicioCohorte, setFechaInicioCohorte] = useState();
     const [fechaFinCohorte, setFechaFinCohorte] = useState();
+    const [diaCohorte, setDiaCohorte] = useState();
+    const [horaInicioCohorte, setHoraInicioCohorte] = useState();
+    const [horaFinCohorte, setHoraFinCohorte] = useState();
 
     const handleClose = () => setShow(false)
     const handleSubmitModificar = async () => {
@@ -28,6 +30,9 @@ export default ({cohortes}) => {
     }
 
 
+    const handleHoraInicioCohorte = event => setHoraInicioCohorte(event.target.value);
+    const handleHoraFinCohorte = event => setHoraFinCohorte(event.target.value);
+    const handleDiaCohorte = event => setDiaCohorte(event.target.value);
     const handleNombreCohorte = event => setNombreCohorte(event.target.value);
     const handleFechaInicioCohorte = event => setFechaInicioCohorte(event.target.value);
     const handleFechaFinCohorte = event => setFechaFinCohorte(event.target.value);
@@ -65,10 +70,6 @@ export default ({cohortes}) => {
                   <Modal.Title>Modificar Cohorte</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group controlId="formIdCohorte" className="mt-2">
-                        <Form.Label>ID Cohorte</Form.Label>
-                        <Form.Control type="text" placeholder="ID Cohorte" value={idCohorte} />
-                    </Form.Group>
                     <Form.Group controlId="formNombreCohorte" className="mt-2">
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control type="text" value={nombreCohorte} placeholder="Ingrese nuevo nombre" onChange={handleNombreCohorte} autoComplete="off" />
@@ -81,6 +82,7 @@ export default ({cohortes}) => {
                         <Form.Label>Fecha Fin</Form.Label>
                         <Form.Control type="date"value={fechaFinCohorte} onChange={handleFechaFinCohorte}/>
                     </Form.Group>
+
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
@@ -121,7 +123,7 @@ export default ({cohortes}) => {
                                 {cohorte.fechaFin}
                             </td>
                             <td>
-                                <Button onClick={() => {handleModificar(cohorte)}}>Modificar</Button>
+                                <Button style={{marginRight: "6px"}} onClick={() => {handleModificar(cohorte)}}>Modificar</Button>
                                 <Button onClick={() => {handleBorrar(cohorte.idCohorte)}}>Borrar</Button>
                             </td>
                         </tr>

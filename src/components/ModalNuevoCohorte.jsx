@@ -1,4 +1,4 @@
-import {Form, Button, Modal} from 'react-bootstrap'
+import {Form, Button, Modal, Table} from 'react-bootstrap'
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 import {URL_BASE, API_GET_SEDES, API_GET_DEPENDENCIAS} from './Api.js'
@@ -6,6 +6,13 @@ import Swal from 'sweetalert2'
 
 export default () => {
 
+    const DIAS_SEMANA = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
+    const MODALIDADES = ["Practico", "Teorico", "Teorico-Practico", "Actividad Extracurricular"]
+
+    let horarios = [];
+
+    const [horariosCohorte, setHorariosCohorte] = useState([]);
+    const [showTable, setShowTable] = useState(false);
     const placeholder = "Seleccione una"
     const [nombre, setNombre] = useState();
     const [sedes, setSedes] = useState([]);
@@ -17,12 +24,28 @@ export default () => {
     const [selectedFechaInicio, setSelectedFechaInicio] = useState();
     const [selectedFechaFin, setSelectedFechaFin] = useState();
 
+    const [diaCohorte, setDiaCohorte] = useState();
+    const [horaInicioCohorte, setHoraInicioCohorte] = useState();
+    const [horaFinCohorte, setHoraFinCohorte] = useState();
+    const [modalidad, setModalidad] = useState();
     const [show, setShow] = useState(false);
     
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
     const handleNombre = (event) => setNombre(event.target.value);
     
+    const handleModalidad = event => setModalidad(event.target.value);
+    const handleHoraInicioCohorte = event => setHoraInicioCohorte(event.target.value);
+    const handleHoraFinCohorte = event => setHoraFinCohorte(event.target.value);
+    const handleDiaCohorte = event => setDiaCohorte(event.target.value);
+
+    const handleAsignar = async () => {
+
+        horarios.push({diaCohorte, horaInicioCohorte, horaFinCohorte, modalidad});
+        Swal.fire('Horario Asignado', '', 'success');
+        console.log(horarios);
+        setShowTable(true);
+    }
     const handleSelectSede = (event) => setSelectedSede(event.target.value);
     const handleSelectDependencia = async (event) => {
         try{
@@ -136,6 +159,53 @@ export default () => {
                         <Form.Label>Fecha Fin</Form.Label>
                         <Form.Control type="date"  onChange={handleSelectedFechaFin}/>
                     </Form.Group>
+                </Modal.Body>
+                    <Modal.Header>
+                        <Modal.Title>Asignar Dias y Horarios</Modal.Title>
+                    </Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="formDiaCohorte" className="mt-2">
+                        <Form.Label>Dia</Form.Label>
+                        <Form.Control as="select" defaultValue="Seleccione uno" onChange={handleDiaCohorte}>
+                            <option disabled>Seleccione uno</option>
+                            {DIAS_SEMANA.map((d) => <option key={d} value={d}>{d}</option>)}
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formHoraInicioCohorte" className="mt-2">
+                        <Form.Label>Hora Inicio</Form.Label>
+                        <Form.Control type="time"value={horaInicioCohorte} onChange={handleHoraInicioCohorte}/>
+                    </Form.Group>
+                    <Form.Group controlId="formHoraFinCohorte" className="mt-2">
+                        <Form.Label>Hora Fin</Form.Label>
+                        <Form.Control type="time"value={horaFinCohorte} onChange={handleHoraFinCohorte}/>
+                    </Form.Group>
+                    <Form.Group controlId="formModalidadCohorte" className="mt-2">
+                        <Form.Label>Modalidad</Form.Label>
+                        <Form.Control as="select" onChange={handleModalidad} defaultValue="Seleccione una">
+                            <option disabled>Seleccione una</option>
+                            {MODALIDADES.map((m) => <option key={m} value={m}>{m}</option>)}
+                        </Form.Control>
+                    </Form.Group>
+                    <Button className="mt-3" variant="primary" onClick={handleAsignar}>Asignar</Button>
+                    <Table striped bordered className="mt-2" hidden={!showTable}>
+                        <thead>
+                            <tr>
+                                <th>Dia</th>
+                                <th>Modalidad</th>
+                                <th>Hora Inicio</th>
+                                <th>Hora Fin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {horarios.map((horario) => {
+                                return (
+                                    <tr>
+                                        <td>{horario.diaCohorte}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>

@@ -31,11 +31,6 @@ const NavBarTop = () => {
                                 </Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Link className="nav-link" to="/AdministrarHorarios">
-                                    Administrar Horarios
-                                </Link>
-                            </Nav.Item>
-                            <Nav.Item>
                                 <Link className="nav-link" to="/AsignarAulas">
                                     Asignar Aulas
                                 </Link>

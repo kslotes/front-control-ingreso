@@ -1,17 +1,21 @@
 import {Table, Button} from 'react-bootstrap'
 import {useState} from 'react'
+import ModalModificarHorario from './ModalModificarHorario'
 
 export default ({horarios}) => {
     
-    const [show, setShow] = useState(false);
+    const [showModal, setShowModal] = useState(false)
+    const [horario, setHorario] = useState();
 
-    const handleModificar = () => {
-        setShow(true);
+    const handleModificar = (horario) => {
+        setShowModal(true);
+        setHorario(horario);
     }
 
     const handleBorrar = () => {}
     return (
         <>
+            {showModal ? <ModalModificarHorario horario={horario} showModal={showModal}/> : ""}
             <Table key={horarios} variant="light" striped bordered responsive>
                 <thead>
                     <tr>

@@ -107,7 +107,7 @@ export default ({aulas}) => {
                                 <td>{aula.nombreEdificio}</td>
                                 <td>{aula.capacidadConAforo} personas</td>
                                 <td>
-                                    <Button onClick={() => {handleModificar(aula)}}>Modificar</Button>
+                                    <Button style={{marginRight: "6px"}} onClick={() => {handleModificar(aula)}}>Modificar</Button>
                                     <Button onClick={() => {handleBorrar(aula.idAula)}}>Borrar</Button>
                                 </td>
                             </tr>

@@ -89,7 +89,7 @@ export default ({actividades}) => {
                                     {actividad.nombreDependencia}
                                 </td>
                                 <td>
-                                    <Button onClick={() => {handleModificar(actividad)}}>Modificar</Button>
+                                    <Button style={{marginRight: "6px"}} onClick={() => {handleModificar(actividad)}}>Modificar</Button>
                                     <Button onClick={() => {handleBorrar(actividad.idActividad)}}>Borrar</Button>
                                 </td>
                             </tr>
