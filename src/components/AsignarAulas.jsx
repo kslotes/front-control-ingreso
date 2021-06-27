@@ -10,6 +10,7 @@ export default () => {
     const [actividades, setActividades] = useState([]);
     const [sedes, setSedes] = useState([]);
     const [edificios, setEdificios] = useState([]);
+    const [aulas, setAulas] = useState([]);
 
     useEffect(() => {
         const fetchActividades = async () => {
