@@ -15,18 +15,26 @@ nav {
     justify-content: center;
   color: #c5cc77;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
   transition: 0.1s;
   margin-left: 10px;
   width: 100%;
   height: 40px;
 }
 
-.nav-item a:hover {
+
+
+.nav-item a:focus, .nav-item a:active, .nav-item a:visited{
+    text-decoration: none;
+}
+
+.nav-item a:focus {
+    color: #c5cc77;
+}
+
+.nav-item a:hover{
     transform: scale(1.1);
   border-radius: 6px;
   border-bottom: 3px solid #c5cc77;
   color: white;
 }
-
-

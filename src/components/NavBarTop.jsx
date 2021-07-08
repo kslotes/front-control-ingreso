@@ -6,7 +6,7 @@ const NavBarTop = () => {
     return (
         <Row>
             <Navbar expand="md" variant="">
-                <Col xs={2} className="text-center ">
+                <Col xs={2}>
                     <Link id="nav-logo" to="/Admin">
                         UnSAdA
                     </Link>
