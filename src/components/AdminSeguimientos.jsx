@@ -2,7 +2,6 @@ import NavBarTop from "./NavBarTop";
 import {useState, useEffect} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import TablaSeguimientos2 from "./TablaSeguimientos2";
-import "./AdminSeguimientos.css";
 import axios from "axios";
 
 

@@ -5,16 +5,16 @@ import "./NavBarTop.css";
 const NavBarTop = () => {
     return (
         <Row>
-            <Navbar className="navbar" expand="md">
+            <Navbar expand="md" variant="">
                 <Col xs={2} className="text-center ">
                     <Link id="nav-logo" to="/Admin">
                         UnSAdA
                     </Link>
                 </Col>
-                <Col className="justify-content-around">
+                <Col >
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <NavbarCollapse>
-                        <Nav onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}>
+                        <Nav>
                             <Nav.Item>
                                 <Link className="nav-link" to="/AdministrarActividades">
                                     Administrar Actividades

@@ -7,7 +7,6 @@ import AdministrarCohortes from './components/AdministrarCohortes';
 import AdministrarAulas from './components/AdministrarAulas'
 import AsignarAulas from './components/AsignarAulas' 
 import AdministrarHorarios from './components/AdministrarHorarios';
-import './App.css';
 
 function App() {
       return (

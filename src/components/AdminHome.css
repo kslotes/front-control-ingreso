@@ -1,5 +1,4 @@
-.fondo{
-	  background: #265661;
-      width: 100%;
-	  min-height: 100vh;
+.fondo {
+    background: #265661;
+    min-height: 100vmax;
 }
