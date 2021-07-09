@@ -3,3 +3,8 @@
       text-shadow: 2px 2px rgba(0, 0, 0, 0.35);
       color: #c5cc77;
   }
+
+.label-dni, .label-fecha {
+    color: #c5cc77;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.35);
+}

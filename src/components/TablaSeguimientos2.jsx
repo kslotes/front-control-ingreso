@@ -15,7 +15,6 @@ const TablaSeguimientos2 = () => {
 
     const handleInputDni = (event) => {
         event.preventDefault();
-        console.log(`Soy el Dni Ingresdo: ${event.target.value}`);
 
         axios.get(`http://areco.gob.ar:9528/api/persona/find/dni/${event.target.value}`).then((result) => {
             if (result.data.data) {
@@ -40,18 +39,15 @@ const TablaSeguimientos2 = () => {
     };
     const handleFechaInicioChange = (event) => {
         setFechaInicio(event.target.value);
-        console.log(`Soy fecha inicio: ${event.target.value}`);
     };
 
     const handleFechaFinChange = (event) => {
         setFechaFin(event.target.value);
-        console.log(`Soy fecha fin: ${event.target.value}`);
     };
 
     const handleSeguimiento = () => {
         axios.get(`http://areco.gob.ar:9528/api/persona/find/persona_sesion/${fechaInicio}/${fechaFin}/${persona.idPersona}`).then((res) => {
             setContactosEstrechos(res.data.personas);
-            console.log(res.data.data);
             if (contactosEstrechos) {
                 setHiddenTable(false);
             }
@@ -68,7 +64,7 @@ const TablaSeguimientos2 = () => {
     return (
         <div className="d-flex flex-column align-items-center">
             <Col xs={12} sm={12} lg={3} className="text-center mt-3">
-                    <Form.Label>Ingrese DNI:</Form.Label>
+                    <Form.Label className="label-dni">Ingrese DNI:</Form.Label>
                     <input placehoder="Ingrese dni" type="text" className="form-control" pattern="(^[0-9][0-9]?\.{1}\d{3}\.\d{3}$)|([0-9][0-9]?\d{3}\d{3}$)" onChange={handleInputDni}></input>
             </Col>
 
@@ -79,11 +75,11 @@ const TablaSeguimientos2 = () => {
                 <h2 className="texto-h2 mt-4">Localizar contactos estrechos: </h2>
                 <Row xs={1} lg={2}>
                     <Col>
-                        <Form.Label>Fecha Inicio</Form.Label>
+                        <Form.Label className="label-fecha">Fecha Inicio</Form.Label>
                         <Form.Control type="date" onChange={handleFechaInicioChange} />
                     </Col>
                     <Col>
-                        <Form.Label>Fecha Fin</Form.Label>
+                        <Form.Label className="label-fecha">Fecha Fin</Form.Label>
                         <Form.Control type="date" onChange={handleFechaFinChange} />
                     </Col>
                 </Row>

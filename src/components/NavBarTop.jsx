@@ -8,7 +8,7 @@ const NavBarTop = () => {
             <Navbar expand="md" variant="">
                 <Col xs={2}>
                     <Link id="nav-logo" to="/Admin">
-                        UnSAdA
+                        UNSAdA
                     </Link>
                 </Col>
                 <Col >
