@@ -12,17 +12,46 @@ export const API_GET_SESIONES = `${URL_BASE}/sesionpresencial/all`
 export const getActividades = async () => {
     return axios.get(API_GET_ACTIVIDADES)
     .then(response => response.data.data)
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 }
 
 export const crearActividad = async (idPropuesta, nombreActividad) => {
     return axios.post(`${URL_BASE}/actividad/create-por-propuesta/${idPropuesta}`, { nombre: nombreActividad })
     .then(response => response.data.data)
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 }
 
 export const updateActividad = async (idActividad, values) => {
     return axios.put(`${URL_BASE}/actividad/update/${idActividad}`, {nombre: values.nombreActividad})
     .then(response => response.data.data)
-    .catch(err => console.log(err))
+    .catch(err => console.error(err))
 }
+
+export const borrarActividad = async (idActividad) => {
+    return axios.delete(`${URL_BASE}/actividad/delete/${idActividad}`)
+    .then(response => response.data.data)
+    .catch(err => console.error(err))
+}
+
+// dependencias
+
+export const getDependencias = async () => {
+    return axios.get(API_GET_DEPENDENCIAS)
+    .then(response => response.data.data)
+    .catch(err => console.error(err))
+}
+
+// Get Actividad for ID From API
+export const getActividad = async (idActividad) => {
+    return axios.get(`${URL_BASE}/actividad/find/${idActividad}`)
+    .then(response => response.data.data)
+    .catch(err => console.error(err))
+}
+
+// Get Cohorte for ID From API
+export const getCohorte = async (idCohorte) => {
+    return axios.get(`${URL_BASE}/cohorte/find/${idCohorte}`)
+    .then(response => response.data.data)
+    .catch(err => console.error(err))
+}
+
