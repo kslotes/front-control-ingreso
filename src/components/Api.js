@@ -15,8 +15,8 @@ export const getActividades = async () => {
     .catch(err => console.error(err))
 }
 
-export const crearActividad = async (idPropuesta, nombreActividad) => {
-    return axios.post(`${URL_BASE}/actividad/create-por-propuesta/${idPropuesta}`, { nombre: nombreActividad })
+export const crearActividad = async (values) => {
+    return axios.post(`${URL_BASE}/actividad/create-por-propuesta/${values.idPropuesta}`, { nombre: values.nombreActividad })
     .then(response => response.data.data)
     .catch(err => console.error(err))
 }
