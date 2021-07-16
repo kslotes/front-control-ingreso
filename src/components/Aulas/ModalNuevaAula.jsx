@@ -1,6 +1,6 @@
 import {Modal, Button, Form} from 'react-bootstrap' 
 import axios from 'axios'
-import {URL_BASE, API_GET_SEDES} from './Api.js'
+import {URL_BASE, API_GET_SEDES} from '../Api.js'
 import Swal from 'sweetalert2'
 import {useState, useEffect} from 'react'
 

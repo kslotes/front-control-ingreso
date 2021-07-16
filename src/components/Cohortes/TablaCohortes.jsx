@@ -2,7 +2,7 @@ import {Table, Button, Form, Modal} from 'react-bootstrap'
 import Swal from 'sweetalert2'
 import {useState} from 'react';
 import axios from 'axios'
-import {URL_BASE} from './Api.js'
+import {URL_BASE} from '../Api.js'
 
 export default ({cohortes}) => {
     const [show, setShow] = useState(false);

@@ -1,6 +1,6 @@
 import {Button, Table} from "react-bootstrap";
 import {useState, useEffect} from "react";
-import {API_GET_SESIONES} from './Api.js'
+import {API_GET_SESIONES} from '../Api.js'
 import axios from "axios";
 export default () => {
     const [sesiones, setSesiones] = useState([]);

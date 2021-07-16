@@ -1,14 +1,28 @@
 import React from "react";
 import "devextreme/dist/css/dx.light.css";
 import * as Api from "../Api.js";
-import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, RequiredRule, Pager, Popup, Form, Lookup} from "devextreme-react/data-grid";
+import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, RequiredRule, Pager, Popup, Lookup} from "devextreme-react/data-grid";
+import {Modal, Form} from "react-bootstrap";
 import {Item} from "devextreme-react/form";
 import CustomStore from "devextreme/data/custom_store";
 import SelectBox from "devextreme-react/select-box";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
+import {ModificarActividad} from "./ModificarActividad";
+import {NuevaActividad} from './NuevaActividad'
 
 const TablaActividades2 = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [actividad, setActividad] = useState();
+
+    const handleClose = () => setShowModal(false);
+    const handleHide = () => setShowModal(false);
+    const handleEditarClick = (data) => {
+        console.log(data);
+        setActividad(data);
+        setShowModal(!showModal);
+    };
+
     const [dependencias, setDependencias] = useState([]);
     const [data] = useState(
         new CustomStore({
@@ -35,6 +49,11 @@ const TablaActividades2 = () => {
 
     const columnas = [
         {
+            dataField: "idActividad",
+            width: "10%",
+            caption: "id",
+        },
+        {
             dataField: "nombreActividad",
             width: 200,
             caption: "Actividad",
@@ -51,6 +70,21 @@ const TablaActividades2 = () => {
         },
     ];
 
+    const onToolbarPreparing = (e) => {
+        let toolbarItems = e.toolbarOptions.items;
+        // Modifies an existing item
+        toolbarItems.forEach(function (item) {
+            if (item.name === "addRowButton") {
+                item.options = {
+                    icon: "add",
+                    hint: "Agregar",
+                    onClick: () => {
+                        console.log("addButton");
+                    },
+                };
+            }
+        });
+    };
     useEffect(() => {
         // Get all Dependencias from API
         Api.getDependencias()
@@ -66,13 +100,24 @@ const TablaActividades2 = () => {
 
     return (
         <div>
-            <DataGrid id="dataGrid" refresh={true} dataSource={data} allowColumnReordering={true} allowColumnResizing={true} columnAutoWidth={false} showBorders={true}>
+            {actividad ? <ModificarActividad actividad={actividad} showModal={showModal} handleClose={handleClose} handleHide={handleHide} /> : null}
+            <DataGrid
+                id="dataGrid"
+                onToolbarPreparing={onToolbarPreparing}
+                refresh={true}
+                dataSource={data}
+                allowColumnReordering={true}
+                allowColumnResizing={true}
+                columnAutoWidth={false}
+                showBorders={true}
+            >
                 <Paging enabled={true} defaultPageSize={10} />
                 <Pager enabled={true} showNavigationButtons={true} showInfo={true} />
                 <FilterRow visible={true} resetOperationText="Deshacer filtros">
                     <OperationDescriptions contains="Contiene" equal="Busqueda Exacta" />
                 </FilterRow>
-                <Editing mode="popup" useIcons={true} allowAdding={true} allowUpdating={true} allowDeleting={true}>
+                <Editing useIcons={true} allowAdding={true} allowUpdating={true} allowDeleting={true}>
+                    <Button name="add" hint="Agregar" onClick={() => console.log("Clicked")} />
                     <Popup closeOnOutsideClick={true} title="Datos de Actividad" showTitle={true} width={600} height={300} />
                     <Form>
                         <Item itemType="group" colCount={1} colSpan={2}>
@@ -83,7 +128,7 @@ const TablaActividades2 = () => {
                     </Form>
                 </Editing>
                 <Column type="buttons" caption="Acciones">
-                    <Button name="edit" hint="Editar" />
+                    <Button name="edit" hint="Editar" onClick={(event) => handleEditarClick(event.row.data)} />
                     <Button name="delete" hint="Borrar" />
                 </Column>
                 {columnas.map((c) => {

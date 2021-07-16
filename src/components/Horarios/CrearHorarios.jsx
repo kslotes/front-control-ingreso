@@ -1,5 +1,5 @@
 import {Container} from 'react-bootstrap'
-import NavBarTop from './NavBarTop'
+import NavBarTop from '../NavBar/NavBarTop'
 export default () => {
     return (
         <Container fluid className="fondo">

@@ -1,8 +1,8 @@
 import {Container, Col}  from 'react-bootstrap';
 import {useState, useEffect} from 'react';
 import axios from 'axios'
-import {API_GET_COHORTES} from './Api.js';
-import NavBarTop from './NavBarTop';
+import {API_GET_COHORTES} from '../Api.js';
+import NavBarTop from '../NavBar/NavBarTop';
 import ModalNuevoCohorte from './ModalNuevoCohorte'
 import TablaCohortes from './TablaCohortes'
 const AdministrarCohortes = () => {

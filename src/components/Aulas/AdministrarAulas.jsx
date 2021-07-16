@@ -1,8 +1,8 @@
 import {Container, Col} from 'react-bootstrap'
-import NavBarTop from './NavBarTop'
+import NavBarTop from '../NavBar/NavBarTop'
 import TablaAulas from './TablaAulas'
 import {useState, useEffect} from 'react'
-import {API_GET_AULAS} from './Api.js'
+import {API_GET_AULAS} from '../Api.js'
 import axios from 'axios'
 import ModalNuevaAula from './ModalNuevaAula'
 

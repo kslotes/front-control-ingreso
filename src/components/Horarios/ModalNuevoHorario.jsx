@@ -1,7 +1,7 @@
 import {Form, Modal, Button} from 'react-bootstrap'
 import axios from 'axios'
 import {useState, useEffect} from 'react'
-import {URL_BASE, API_GET_DEPENDENCIAS} from './Api.js'
+import {URL_BASE, API_GET_DEPENDENCIAS} from '../Api.js'
 import Swal from 'sweetalert2'
 
 export default ({showModal}) => {
