@@ -1,9 +1,9 @@
 import {Modal, Button, Form} from 'react-bootstrap'
 import {useState, useEffect} from 'react'
-import {API_GET_DEPENDENCIAS, URL_BASE} from '../Api.js'
+import * as Api from '../Api.js'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-export default () => {
+export default (props) => {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -13,47 +13,34 @@ export default () => {
     const [dependencias, setDependencias] = useState([]);
     const [propuestas, setPropuestas] = useState([]);
 
-    const [Actividad, setActividad] = useState();
+    const [nombreActividad, setNombreActividad] = useState();
     const [idPropuesta, setIdPropuesta] = useState();
 
     const handleSubmit = async () => {
-        try{
-            await axios.post(`${URL_BASE}/actividad/create-por-propuesta/${idPropuesta}`, {nombre: Actividad})
-            Swal.fire('Actividad Creada!', '', 'success')
-        }
-        catch(err) {
-            console.error(err);
-            Swal.fire('La actividad no se pudo crear. Intente nuevamente', '', 'error')
-        }
-        finally {
-            setShow(false)
-        }
+        Api.crearActividad(idPropuesta, nombreActividad)
     }
 
     const handleSelectDependencia = (event) => {
-        const fetchPropuestas = async () => {
-            const result = await axios.get(`${URL_BASE}/propuesta/find/dependencia/${event.target.value}`)
-            setPropuestas(result.data.data)
-        }
-        fetchPropuestas();
+        Api.getPropuestasByDependencia(event.target.value)
+            .then(res => setPropuestas(res))
     }
 
     const handleSelectPropuesta = event => setIdPropuesta(event.target.value);
-    const handleActividad = event => setActividad(event.target.value);
+    const handleActividad = event => setNombreActividad(event.target.value);
 
     useEffect(() => {
-        axios.get(API_GET_DEPENDENCIAS)
+        Api.getDependencias()
             .then(res => {
-                setDependencias(res.data.data);
+                setDependencias(res);
             })
     }, [])
+
+    useEffect(() => {
+        setShow(props.showModal);
+    }, [props.showModal]);
     return (
         <>
-          <Button className="mb-3" variant="primary" onClick={handleShow}>
-              Nueva Actividad
-          </Button>
-
-          <Modal show={show} onHide={handleClose}>
+          <Modal show={show} onHide={props.handleHide}>
             <Modal.Header >
               <Modal.Title>Crear nueva actividad</Modal.Title>
             </Modal.Header>
@@ -74,12 +61,12 @@ export default () => {
                     </Form.Group>
                     <Form.Group controlId="formActividadPropuesta"className="mt-2">
                         <Form.Label>Actividad </Form.Label>
-                        <Form.Control type="text" placeholder="Ingrese nombre" required autoComplete="off"onChange={handleActividad}/>
+                        <Form.Control type="text" placeholder="Ingrese nombre de la actividad" required autoComplete="off"onChange={handleActividad}/>
                     </Form.Group>
 
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="secondary" onClick={props.handleClose}>
                   Cerrar
               </Button>
               <Button variant="primary" onClick={handleSubmit}>

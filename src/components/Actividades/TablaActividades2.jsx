@@ -9,18 +9,26 @@ import SelectBox from "devextreme-react/select-box";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
 import {ModificarActividad} from "./ModificarActividad";
-import {NuevaActividad} from './NuevaActividad'
+import NuevaActividad from "./NuevaActividad";
 
 const TablaActividades2 = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [showModalModificar, setshowModalModificar] = useState(false);
+    const [showModalAgregar, setShowModalAgregar] = useState(false);
     const [actividad, setActividad] = useState();
 
-    const handleClose = () => setShowModal(false);
-    const handleHide = () => setShowModal(false);
+    const handleCloseModificar = () => setshowModalModificar(false);
+    const handleHideModificar = () => setshowModalModificar(false);
+    const handleCloseAgregar = () => setShowModalAgregar(false);
+    const handleHideAgregar = () => setShowModalAgregar(false);
+    
     const handleEditarClick = (data) => {
         console.log(data);
         setActividad(data);
-        setShowModal(!showModal);
+        setshowModalModificar(!showModalModificar);
+    };
+    const handleAgregarClick = () => {
+        setShowModalAgregar(!showModalAgregar);
+        console.log(`Agregar clicked`);
     };
 
     const [dependencias, setDependencias] = useState([]);
@@ -78,9 +86,7 @@ const TablaActividades2 = () => {
                 item.options = {
                     icon: "add",
                     hint: "Agregar",
-                    onClick: () => {
-                        console.log("addButton");
-                    },
+                    onClick: handleAgregarClick,
                 };
             }
         });
@@ -90,7 +96,6 @@ const TablaActividades2 = () => {
         Api.getDependencias()
             .then((data) => {
                 setDependencias(data);
-                console.log(data);
                 console.log("Dependencias", dependencias);
             })
             .catch((error) => {
@@ -100,7 +105,8 @@ const TablaActividades2 = () => {
 
     return (
         <div>
-            {actividad ? <ModificarActividad actividad={actividad} showModal={showModal} handleClose={handleClose} handleHide={handleHide} /> : null}
+            <NuevaActividad showModal={showModalAgregar} handleClose={handleCloseAgregar} handleHide={handleHideAgregar} />
+            {actividad ? <ModificarActividad actividad={actividad} showModal={showModalModificar} handleClose={handleCloseModificar} handleHide={handleHideModificar} /> : null}
             <DataGrid
                 id="dataGrid"
                 onToolbarPreparing={onToolbarPreparing}
