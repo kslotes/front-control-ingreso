@@ -4,15 +4,15 @@ import axios from 'axios'
 import {URL_BASE, API_GET_SEDES, API_GET_DEPENDENCIAS} from '../Api.js'
 import Swal from 'sweetalert2'
 
-export default () => {
+export default (props) => {
 
     const DIAS_SEMANA = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
     const MODALIDADES = ["Practico", "Teorico", "Teorico-Practico", "Actividad Extracurricular"]
 
     let horarios = [];
-
-    const [horariosCohorte, setHorariosCohorte] = useState([]);
     const [showTable, setShowTable] = useState(false);
+    const [horariosCohorte, setHorariosCohorte] = useState([]);
+    const [show, setShow] = useState(false);
     const placeholder = "Seleccione una"
     const [nombre, setNombre] = useState();
     const [sedes, setSedes] = useState([]);
@@ -28,7 +28,6 @@ export default () => {
     const [horaInicioCohorte, setHoraInicioCohorte] = useState();
     const [horaFinCohorte, setHoraFinCohorte] = useState();
     const [modalidad, setModalidad] = useState();
-    const [show, setShow] = useState(false);
     
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -40,31 +39,14 @@ export default () => {
     const handleDiaCohorte = event => setDiaCohorte(event.target.value);
 
     const handleAsignar = async () => {
-
-        horarios.push({diaCohorte, horaInicioCohorte, horaFinCohorte, modalidad});
-        Swal.fire('Horario Asignado', '', 'success');
-        console.log(horarios);
-        setShowTable(true);
     }
     const handleSelectSede = (event) => setSelectedSede(event.target.value);
     const handleSelectDependencia = async (event) => {
-        try{
-            const res = await axios.get(`${URL_BASE}/propuesta/find/dependencia/${event.target.value}`)
-            setPropuestas(res.data.data);
-        }
-        catch(err) {
-            console.error(err)
-        }
+    
     }
 
     const handleSelectPropuesta = async (event) => {
-        try{
-            const res = await axios.get(`${URL_BASE}/actividad/find/propuesta/${event.target.value}`)
-            setActividades(res.data.data);
-        }
-        catch(err) {
-            console.error(err);
-        }
+       
     }
     const handleSelectActividad = (event) => setSelectedActividad(event.target.value);
     const handleSelectedFechaInicio = (event) => {
@@ -72,49 +54,14 @@ export default () => {
     }
     const handleSelectedFechaFin = (event) => setSelectedFechaFin(event.target.value); 
     const handleSubmit = async () => {
-        console.log(`Sede: ${selectedSede}, Actividad: ${selectedActividad}, Nombre: ${nombre}, FechaInicio: ${selectedFechaInicio}, FechaFin: ${selectedFechaFin}`)
-        try{
-            await axios.post(`${URL_BASE}/cohorte/create/${selectedActividad}/${selectedSede}`, {nombreCohorte: nombre, fechaInicio: selectedFechaInicio, fechaFin: selectedFechaFin})
-            Swal.fire('Cohorte Creado!', '', 'success')
-        }
-        catch(err) {
-            console.error(err);
-            Swal.fire('El cohorte no se pudo crear. Intente nuevamente', '', 'error')
-        }
-        finally {
-            setShow(false)
-        }
     }
 
     useEffect(() => {
-        const fetchSedes = async () => {
-            try{
-                const res = await axios.get(API_GET_SEDES);
-                setSedes(res.data.data)
-            }
-            catch(err) {
-                console.error(err)
-            }
-        }
-        const fetchDependencias = async () => {
-            try{
-                const res= await axios.get(API_GET_DEPENDENCIAS);
-                setDependencias(res.data.data)
-            }
-            catch(err) {
-                console.error(err)
-            }
-        }
-        fetchSedes();
-        fetchDependencias();
-    }, [])
-
+        setShow(props.showModal);
+    }, [props.showModal]);
     return (
         <>
-          <Button className="mb-3" variant="primary" onClick={handleShow}>
-              Nuevo Cohorte
-          </Button>
-          <Modal show={show} onHide={handleClose}>
+          <Modal show={show} onHide={props.handleHide}>
             <Modal.Header >
               <Modal.Title>Crear Cohorte</Modal.Title>
             </Modal.Header>
@@ -209,7 +156,7 @@ export default () => {
                     </Table>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button variant="secondary" onClick={props.handleClose}>
                   Cerrar
               </Button>
               <Button variant="primary" onClick={handleSubmit}>

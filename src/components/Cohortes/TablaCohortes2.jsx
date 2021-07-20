@@ -6,20 +6,27 @@ import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, Requir
 import CustomStore from "devextreme/data/custom_store";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
-
+import NuevoCohorte from './NuevoCohorte'
 import Swal from "sweetalert2";
 
 const TablaCohortes2 = () => {
+    const [showModalModificar, setshowModalModificar] = useState(false);
+    const [showModalAgregar, setShowModalAgregar] = useState(false);
+    const handleCloseModificar = () => setshowModalModificar(false);
+    const handleHideModificar = () => setshowModalModificar(false);
+    const handleCloseAgregar = () => setShowModalAgregar(false);
+    const handleHideAgregar = () => setShowModalAgregar(false);
 
-    const handleAgregarClick = () => {
-        console.log('Agregar');
-    }
-    const handleEditarClick = (row) => {
-        console.log('Editar');
-    }
-    const handleBorrarClick = (row) => {
-        console.log('Eliminar');
-    }
+    const handleShowAgregar = () => {
+        setShowModalAgregar(true);
+        console.log("Agregar");
+    };
+    const handleShowEditar = (row) => {
+        console.log("Editar");
+    };
+    const handleShowBorrar = (row) => {
+        console.log("Eliminar");
+    };
     const [data] = useState(
         new CustomStore({
             key: "idCohorte",
@@ -42,6 +49,11 @@ const TablaCohortes2 = () => {
     const filtros = ["contains", "="];
 
     const columnas = [
+        {
+            dataField: "idCohorte",
+            width: 50,
+            caption: "Id",
+        },
         {
             dataField: "nombreCohorte",
             width: 300,
@@ -72,7 +84,7 @@ const TablaCohortes2 = () => {
                 item.options = {
                     icon: "add",
                     hint: "Agregar",
-                    onClick: handleAgregarClick,
+                    onClick: handleShowAgregar,
                 };
             }
         });
@@ -80,6 +92,8 @@ const TablaCohortes2 = () => {
 
     return (
         <div>
+            <NuevoCohorte showModal={showModalAgregar} handleClose={handleCloseAgregar} handleHide={handleHideAgregar} />
+
             <DataGrid
                 id="dataGrid"
                 onToolbarPreparing={onToolbarPreparing}
@@ -97,8 +111,8 @@ const TablaCohortes2 = () => {
                 </FilterRow>
                 <Editing useIcons={true} allowAdding={true} allowUpdating={true} allowDeleting={true}></Editing>
                 <Column type="buttons" caption="Acciones">
-                    <Button name="edit" hint="Editar" onClick={(event) => handleEditarClick(event.row.data)} />
-                    <Button name="delete" hint="Borrar" onClick={(event) => handleBorrarClick(event.row.data)} />
+                    <Button name="edit" hint="Editar" onClick={(event) => handleShowEditar(event.row.data)} />
+                    <Button name="delete" hint="Borrar" onClick={(event) => handleShowBorrar(event.row.data)} />
                 </Column>
                 {columnas.map((c) => {
                     return (
