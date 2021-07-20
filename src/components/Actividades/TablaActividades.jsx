@@ -112,9 +112,6 @@ const TablaActividades2 = () => {
                 setDependencias(data);
                 console.log("Dependencias", dependencias);
             })
-            .catch((error) => {
-                console.err(error);
-            });
     }, [data]);
 
     return (
