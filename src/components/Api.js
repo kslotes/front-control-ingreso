@@ -51,6 +51,12 @@ export const getActividadById = async (idActividad) => {
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
 }
+
+export const getActividadesByPropuesta = async (idPropuesta) => {
+    return axios.get(`${URL_BASE}/actividad/find/propuesta/${idPropuesta}`)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
 // dependencias
 
 export const getDependencias = async () => {
@@ -58,6 +64,8 @@ export const getDependencias = async () => {
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
 }
+
+
 
 // Get All Cohortes from API
 export const getCohortes = async () => {
@@ -78,3 +86,10 @@ export const getPropuestasByDependencia = async (idDependencia) => {
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
 }
+
+export const getSedes = async () => {
+    return axios.get(API_GET_SEDES)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
+
