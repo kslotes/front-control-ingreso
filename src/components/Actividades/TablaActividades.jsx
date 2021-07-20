@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 const TablaActividades2 = () => {
     const [showModalModificar, setshowModalModificar] = useState(false);
     const [showModalAgregar, setShowModalAgregar] = useState(false);
-    const [actividad, setActividad] = useState();
+    const [actividadModificar, setActividadModificar] = useState();
 
     const handleCloseModificar = () => setshowModalModificar(false);
     const handleHideModificar = () => setshowModalModificar(false);
@@ -24,7 +24,7 @@ const TablaActividades2 = () => {
 
     const handleEditarClick = (data) => {
         console.log(data);
-        setActividad(data);
+        setActividadModificar(data);
         setshowModalModificar(!showModalModificar);
     };
     const handleAgregarClick = () => {
@@ -120,7 +120,7 @@ const TablaActividades2 = () => {
     return (
         <div>
             <NuevaActividad showModal={showModalAgregar} handleClose={handleCloseAgregar} handleHide={handleHideAgregar} />
-            {actividad ? <ModificarActividad actividad={actividad} showModal={showModalModificar} handleClose={handleCloseModificar} handleHide={handleHideModificar} /> : null}
+            {actividadModificar ? <ModificarActividad actividad={actividadModificar} showModal={showModalModificar} handleClose={handleCloseModificar} handleHide={handleHideModificar} /> : null}
             <DataGrid
                 id="dataGrid"
                 onToolbarPreparing={onToolbarPreparing}
