@@ -7,13 +7,16 @@ import CustomStore from "devextreme/data/custom_store";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
 import NuevoCohorte from './NuevoCohorte'
+import ModificarCohorte from './ModificarCohorte'
 import Swal from "sweetalert2";
 
 const TablaCohortes2 = () => {
-    const [showModalModificar, setshowModalModificar] = useState(false);
+    const [cohorteModificar, setCohorteModificar] = useState(null);
+
+    const [showModalModificar, setShowModalModificar] = useState(false);
     const [showModalAgregar, setShowModalAgregar] = useState(false);
-    const handleCloseModificar = () => setshowModalModificar(false);
-    const handleHideModificar = () => setshowModalModificar(false);
+    const handleCloseModificar = () => setShowModalModificar(false);
+    const handleHideModificar = () => setShowModalModificar(false);
     const handleCloseAgregar = () => setShowModalAgregar(false);
     const handleHideAgregar = () => setShowModalAgregar(false);
 
@@ -23,6 +26,8 @@ const TablaCohortes2 = () => {
     };
     const handleShowEditar = (row) => {
         console.log("Editar");
+        setCohorteModificar(row);
+        setShowModalModificar(true);
     };
     const handleShowBorrar = (row) => {
         console.log("Eliminar");
@@ -93,6 +98,7 @@ const TablaCohortes2 = () => {
     return (
         <div>
             <NuevoCohorte showModal={showModalAgregar} handleClose={handleCloseAgregar} handleHide={handleHideAgregar} />
+            {cohorteModificar ? <ModificarCohorte cohorte={cohorteModificar} showModal={showModalModificar} handleClose={handleCloseModificar} handleHide={handleHideModificar} /> : null}
 
             <DataGrid
                 id="dataGrid"
