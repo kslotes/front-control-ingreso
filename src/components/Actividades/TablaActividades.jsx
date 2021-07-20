@@ -1,102 +1,167 @@
-import {Table, Button, Modal, Form} from 'react-bootstrap'
-import Swal from 'sweetalert2'
-import {URL_BASE} from '../Api.js'
-import {useState} from 'react'
-import axios from 'axios'
-export default ({actividades}) => {
+import React from "react";
+import "devextreme/dist/css/dx.light.css";
+import * as Api from "../Api.js";
+import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, RequiredRule, Pager, Popup} from "devextreme-react/data-grid";
+import {Form} from "react-bootstrap";
+import {Item} from "devextreme-react/form";
+import CustomStore from "devextreme/data/custom_store";
+import {useState, useEffect} from "react";
+import {FilterRow} from "devextreme-react/tree-list";
+import {ModificarActividad} from "./ModificarActividad";
+import BorrarActividad from "./BorrarActividad";
+import NuevaActividad from "./NuevaActividad";
+import Swal from "sweetalert2";
 
-    const [show, setShow] = useState(false);
-    const [nuevoNombre, setNuevoNombre] = useState();
-    const [idActividad, setIdActividad] = useState();
-    const [nombreActividad, setNombreActividad] = useState();
-    const handleModificar = (actividad) => {
-        setShow(true);
-        setIdActividad(actividad.idActividad);
-        setNombreActividad(actividad.nombreActividad);
-    }
-    const handleClose = () => setShow(false);
-    const handleSubmit = async () => {
-        try{
-            await axios.put(`${URL_BASE}/actividad/update/${idActividad}`, {nombre: nuevoNombre})
-            Swal.fire('Actividad modicada.', `Nuevo nombre: ${nuevoNombre}`, 'success')
-            setShow(false);
-        }
-        catch(err){
-            Swal.fire('Error al modificar, intente nuevamente', '', 'error')
-            console.error(err)
-            setShow(false);
-        }
+const TablaActividades2 = () => {
+    const [showModalModificar, setshowModalModificar] = useState(false);
+    const [showModalAgregar, setShowModalAgregar] = useState(false);
+    const [actividad, setActividad] = useState();
+
+    const handleCloseModificar = () => setshowModalModificar(false);
+    const handleHideModificar = () => setshowModalModificar(false);
+    const handleCloseAgregar = () => setShowModalAgregar(false);
+    const handleHideAgregar = () => setShowModalAgregar(false);
+
+    const handleEditarClick = (data) => {
+        console.log(data);
+        setActividad(data);
+        setshowModalModificar(!showModalModificar);
     };
-    const handleNuevoNombre = event => setNuevoNombre(event.target.value) 
-    const handleBorrar = (idActividad) => {
-    
+    const handleAgregarClick = () => {
+        setShowModalAgregar(!showModalAgregar);
+        console.log(`Agregar clicked`);
+    };
+    const handleBorrarClick = (data) => {
+        console.log(data);
         Swal.fire({
-            title: `¿Estás seguro?`,
-            text: `Esta acción no puede deshacerse.`,
-            icon: 'warning',
-            showDenyButton: true,
-            denyButtonText: 'No',
-            confirmButtonText: 'Si',
+            title: "¿Borrar actividad?",
+            text: "Esta eliminará todas las cursadas, horarios y sesiones asignadas a la misma.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, borrar",
+            cancelButtonText: "No, cancelar",
+            closeOnConfirm: false,
+            closeOnCancel: false,
         }).then((res) => {
-            if(res.isConfirmed) {
-                Swal.fire('Actividad eliminada.', '', 'success')
-                axios.delete(`${URL_BASE}/actividad/delete/${idActividad}`)
+            if (res.isConfirmed) {
+                Api.borrarActividad(data.idActividad);
             }
-        })
-    }
-    return(
-        <>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header >
-                  <Modal.Title>Modificar Actividad</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="formDependenciaActividad" className="mt-2">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text" placeholder="Ingrese nuevo nombre" defaultValue={nombreActividad} onChange={handleNuevoNombre}/>
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                      Cerrar
-                  </Button>
-                  <Button variant="primary" onClick={handleSubmit}>
-                      Guardar Cambios
-                  </Button>
-                </Modal.Footer>
-            </Modal>
-            <Table key={actividades} variant="light" striped bordered responsive>
-                <thead>
-                    <tr>
-                        <th>Nombre Actividad</th>
-                        <th>Propuesta</th>
-                        <th>Dependencia</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {actividades.map((actividad) => {
-                        return (
-                            <tr key={actividad.idActividad}>
-                                <td>
-                                    {actividad.nombreActividad}
-                                </td>
+        });
+    };
 
-                                <td>
-                                    {actividad.nombrePropuesta}
-                                </td>
-                                <td>
-                                    {actividad.nombreDependencia}
-                                </td>
-                                <td>
-                                    <Button style={{marginRight: "6px"}} onClick={() => {handleModificar(actividad)}}>Modificar</Button>
-                                    <Button onClick={() => {handleBorrar(actividad.idActividad)}}>Borrar</Button>
-                                </td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </Table>
-        </>
-    )
-}
+    const [dependencias, setDependencias] = useState([]);
+    const [data] = useState(
+        new CustomStore({
+            key: "idActividad",
+            insert: (values) => {
+                Api.crearActividad(values);
+                console.log(values);
+            },
+            load: () => {
+                console.log(Api.getActividades());
+                return Api.getActividades();
+            },
+            update: (key, values) => {
+                console.log(key, values);
+                Api.updateActividad(key, values);
+            },
+            remove: (key) => {
+                Api.borrarActividad(key);
+            },
+        })
+    );
+
+    const filtros = ["contains", "="];
+
+    const columnas = [
+        {
+            dataField: "nombreActividad",
+            width: 400,
+            caption: "Actividad",
+        },
+        {
+            dataField: "nombreDependencia",
+            width: 400,
+            caption: "Dependencia",
+        },
+        {
+            dataField: "nombrePropuesta",
+            width: 300,
+            caption: "Propuesta",
+        },
+    ];
+
+    const onToolbarPreparing = (e) => {
+        let toolbarItems = e.toolbarOptions.items;
+        // Modifies an existing item
+        toolbarItems.forEach(function (item) {
+            if (item.name === "addRowButton") {
+                item.options = {
+                    icon: "add",
+                    hint: "Agregar",
+                    onClick: handleAgregarClick,
+                };
+            }
+        });
+    };
+    useEffect(() => {
+        // Get all Dependencias from API
+        Api.getDependencias()
+            .then((data) => {
+                setDependencias(data);
+                console.log("Dependencias", dependencias);
+            })
+            .catch((error) => {
+                console.err(error);
+            });
+    }, [data]);
+
+    return (
+        <div>
+            <NuevaActividad showModal={showModalAgregar} handleClose={handleCloseAgregar} handleHide={handleHideAgregar} />
+            {actividad ? <ModificarActividad actividad={actividad} showModal={showModalModificar} handleClose={handleCloseModificar} handleHide={handleHideModificar} /> : null}
+            <DataGrid
+                id="dataGrid"
+                onToolbarPreparing={onToolbarPreparing}
+                refresh={true}
+                dataSource={data}
+                allowColumnReordering={true}
+                allowColumnResizing={true}
+                columnAutoWidth={false}
+                showBorders={true}
+            >
+                <Paging enabled={true} defaultPageSize={10} />
+                <Pager enabled={true} showNavigationButtons={true} showInfo={true} />
+                <FilterRow visible={true} resetOperationText="Deshacer filtros">
+                    <OperationDescriptions contains="Contiene" equal="Busqueda Exacta" />
+                </FilterRow>
+                <Editing useIcons={true} allowAdding={true} allowUpdating={true} allowDeleting={true}>
+                    <Button name="add" hint="Agregar" onClick={() => console.log("Clicked")} />
+                    <Popup closeOnOutsideClick={true} title="Datos de Actividad" showTitle={true} width={600} height={300} />
+                    <Form>
+                        <Item itemType="group" colCount={1} colSpan={2}>
+                            <Item dataField="nombreActividad" required={true} />
+                            <Item dataField="nombreDependencia" required={true} />
+                            <Item dataField="nombrePropuesta" required={true} />
+                        </Item>
+                    </Form>
+                </Editing>
+                <Column type="buttons" caption="Acciones">
+                    <Button name="edit" hint="Editar" onClick={(event) => handleEditarClick(event.row.data)} />
+                    <Button name="delete" hint="Borrar" onClick={(event) => handleBorrarClick(event.row.data)} />
+                </Column>
+                {columnas.map((c) => {
+                    return (
+                        <Column dataField={c.dataField} caption={c.caption} width={c.width} filterOperations={filtros}>
+                            <RequiredRule message={`${c.caption} es un campo obligatorio.`} />
+                        </Column>
+                    );
+                })}
+            </DataGrid>
+        </div>
+    );
+};
+
+export default TablaActividades2;

@@ -46,7 +46,7 @@ export const borrarActividad = async (idActividad) => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 // Get Actividad for ID From API
-export const getActividad = async (idActividad) => {
+export const getActividadById = async (idActividad) => {
     return axios.get(`${URL_BASE}/actividad/find/${idActividad}`)
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
@@ -59,10 +59,15 @@ export const getDependencias = async () => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
-
+// Get All Cohortes from API
+export const getCohortes = async () => {
+    return axios.get(API_GET_COHORTES)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
 
 // Get Cohorte for ID From API
-export const getCohorte = async (idCohorte) => {
+export const getCohorteById = async (idCohorte) => {
     return axios.get(`${URL_BASE}/cohorte/find/${idCohorte}`)
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
