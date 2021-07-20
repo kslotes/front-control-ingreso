@@ -29,7 +29,6 @@ const TablaActividades2 = () => {
     };
     const handleAgregarClick = () => {
         setShowModalAgregar(!showModalAgregar);
-        console.log(`Agregar clicked`);
     };
     const handleBorrarClick = (data) => {
         console.log(data);
