@@ -1,14 +1,16 @@
 import {Form, Button, Modal, Table} from 'react-bootstrap'
 import {useState, useEffect} from 'react'
-import axios from 'axios'
 import * as Api from '../Api.js'
-import Swal from 'sweetalert2'
 
 /*
  TODO: Resolver asignacion de horarios
     * Ya esta armado el array de horarios, falta arreglar que la tabla renderice correctamente
  TODO: Al crear un cohorte, asignar al horario el idCohorte devuelto por la api
+ TODO: Crear horarios en base de datos
  TODO: Agregar a la tabla de cohortes los horarios asignados
+
+ ? Como implementar la asignacion del idCohorte a los horarios
+ ? Como renderizar nuevamente la tabla cuando se alteran los datos (evitar el window.location.reload())
 */
 
 const DIAS_SEMANA = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]
@@ -77,7 +79,7 @@ export default (props) => {
 
     const handleCrearCohorte = async () => {
         console.log(`${nombre}, ${sede}, ${dependencia}, ${propuesta}, ${actividad}, ${fechaInicio}, ${fechaFin}`)
-        console.log(Api.addCohorte(actividad, sede, nombre, fechaInicio, fechaFin).data)
+        console.log(Api.addCohorte(actividad, sede, nombre, fechaInicio, fechaFin).then((res) => setCohorteCreado(res)));
     }
     const handleAsignarHorario = async () => {
         setShowTable(true);
@@ -104,10 +106,14 @@ export default (props) => {
         Api.getDependencias().then((res) => {
             setDependencias(res)
         })
+        
+    }, [])
+
+    useEffect(() => {
         Api.getCohortes().then((res) => {
             setCohortes(res)
         })
-    }, [])
+    }, [cohorteCreado])
     return (
         <>
           <Modal show={show} onHide={props.handleHide}>
