@@ -98,7 +98,7 @@ export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio
             fechaFin: fechaFin
         })
         .then(response => {
-            Swal.fire('Cohorte creado!', '', 'success').then(() => { window.location.reload() });
+            Swal.fire('Cohorte creado!', 'Recargue la pagina para ver los cambios', 'success');
             return response.data.data
         })
         .catch (err => Swal.fire('Error', err, 'error'));
