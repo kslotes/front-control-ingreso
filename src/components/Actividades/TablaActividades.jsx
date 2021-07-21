@@ -54,10 +54,7 @@ const TablaActividades2 = () => {
     const [data] = useState(
         new CustomStore({
             key: "idActividad",
-            insert: (values) => {
-                Api.crearActividad(values);
-                console.log(values);
-            },
+
             load: () => {
                 console.log(Api.getActividades());
                 return Api.getActividades();
