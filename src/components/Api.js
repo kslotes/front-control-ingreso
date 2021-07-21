@@ -82,6 +82,14 @@ export const getCohorteById = async (idCohorte) => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
+export const deleteCohorte = async (idCohorte) => {
+    return axios.delete(`${URL_BASE}/cohorte/delete/${idCohorte}`)
+        .then(response => {
+            Swal.fire('Cohorte eliminado', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
 export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio, fechaFin) => {
     return axios.post(`${URL_BASE}/cohorte/create/${idActividad}/${idSede}`,
         {

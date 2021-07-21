@@ -30,7 +30,23 @@ const TablaCohortes2 = () => {
         setShowModalModificar(true);
     };
     const handleShowBorrar = (row) => {
-        console.log("Eliminar");
+        console.log(row);
+        Swal.fire({
+            title: "¿Borrar cohorte?",
+            text: "Esta acción eliminará todos los horarios y sesiones asociados al mismo.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Si, borrar",
+            cancelButtonText: "No, cancelar",
+            closeOnConfirm: false,
+            closeOnCancel: false,
+        }).then((res) => {
+            if (res.isConfirmed) {
+                Api.deleteCohorte(row.idCohorte);
+            }
+        });
     };
     const [data] = useState(
         new CustomStore({
