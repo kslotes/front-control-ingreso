@@ -8,10 +8,13 @@ import CustomStore from "devextreme/data/custom_store";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
 import {ModificarActividad} from "./ModificarActividad";
-import BorrarActividad from "./BorrarActividad";
+import deleteActividad from "./deleteActividad";
 import NuevaActividad from "./NuevaActividad";
 import Swal from "sweetalert2";
 
+/*
+    TODO: Quitar deleteActividad de este archivo y modularizarlo
+*/
 const TablaActividades2 = () => {
     const [showModalModificar, setshowModalModificar] = useState(false);
     const [showModalAgregar, setShowModalAgregar] = useState(false);
@@ -45,7 +48,7 @@ const TablaActividades2 = () => {
             closeOnCancel: false,
         }).then((res) => {
             if (res.isConfirmed) {
-                Api.borrarActividad(data.idActividad);
+                Api.deleteActividad(data.idActividad);
             }
         });
     };
@@ -64,7 +67,7 @@ const TablaActividades2 = () => {
                 Api.updateActividad(key, values);
             },
             remove: (key) => {
-                Api.borrarActividad(key);
+                Api.deleteActividad(key);
             },
         })
     );

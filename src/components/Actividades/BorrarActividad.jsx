@@ -15,6 +15,6 @@ export default ({idActividad}) => {
         closeOnConfirm: false,
         closeOnCancel: false
     }).then(() => {
-        Api.borrarActividad(idActividad)
+        Api.deleteActividad(idActividad)
     })
 }
