@@ -10,7 +10,6 @@ import TablaHorarios from './TablaHorarios.jsx'
  TODO: Crear horarios en base de datos
  TODO: Agregar a la tabla de cohortes los horarios asignados
 
- ? Como implementar la asignacion del idCohorte a los horarios
  ? Como renderizar nuevamente la tabla cuando se alteran los datos (evitar el window.location.reload())
 */
 
