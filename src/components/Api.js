@@ -101,9 +101,20 @@ export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio
             Swal.fire('Cohorte creado!', 'Recargue la pagina para ver los cambios', 'success');
             return response.data
         })
-        .catch (err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error', err, 'error'));
 }
 
+export const updateCohorte = async (idCohorte, nombreCohorte, fechaInicio, fechaFin) => {
+    return axios.put(`${URL_BASE}/cohorte/update/${idCohorte}`, {
+        nombreCohorte: nombreCohorte,
+        fechaInicio: fechaInicio,
+        fechaFin: fechaFin,
+    })
+        .then(response => {
+            Swal.fire('Cohorte actualizado', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+}
 // * PROPUESTAS *
 
 export const getPropuestasByDependencia = async (idDependencia) => {
