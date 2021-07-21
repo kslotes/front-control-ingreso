@@ -38,7 +38,7 @@ export const updateActividad = async (idActividad, nombreActividad) => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
-export const borrarActividad = async (idActividad) => {
+export const deleteActividad = async (idActividad) => {
     return axios.delete(`${URL_BASE}/actividad/delete/${idActividad}`)
         .then(response => {
             Swal.fire('Actividad eliminada', '', 'success').then(() => { window.location.reload() });
