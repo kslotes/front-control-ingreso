@@ -1,6 +1,7 @@
 import {Form, Button, Modal, Table} from 'react-bootstrap'
 import {useState, useEffect} from 'react'
 import * as Api from '../Api.js'
+import TablaHorarios from './TablaHorarios.jsx'
 
 /*
  TODO: Resolver asignacion de horarios
@@ -83,14 +84,14 @@ export default (props) => {
     }
     const handleAsignarHorario = async () => {
         setShowTable(true);
-        arrHorarios.push(
+        arrHorarios = [...arrHorarios,
             {
                 dia: dia,
                 horaInicio: horaInicio,
                 horaFin: horaFin,
                 modalidad: modalidad
             }
-        )
+        ]
         console.log('arrHorarios:', arrHorarios);
         setHorarios(arrHorarios);
         console.log('horarios state', horarios);
@@ -203,28 +204,7 @@ export default (props) => {
                         </Form.Control>
                     </Form.Group>
                     <Button className="mt-3" variant="primary" onClick={handleAsignarHorario}>Asignar Horario</Button>
-                    <Table striped bordered className="mt-2" hidden={!showTable}>
-                        <thead>
-                            <tr>
-                                <th>Dia</th>
-                                <th>Modalidad</th>
-                                <th>Hora Inicio</th>
-                                <th>Hora Fin</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {horarios.map((horario) => {
-                                return (
-                                    <tr>
-                                        <td>{horario.dia}</td>
-                                        <td>{horario.modalidad}</td>
-                                        <td>{horario.horaInicio}</td>
-                                        <td>{horario.horaFin}</td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </Table>
+                    <TablaHorarios horarios={horarios} showTable={showTable}/>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={props.handleClose}>
