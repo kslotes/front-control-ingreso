@@ -11,6 +11,7 @@ export const API_GET_HORARIOS = `${URL_BASE}/horario/all`
 export const API_GET_SESIONES = `${URL_BASE}/sesionpresencial/all`
 
 
+// * ACTIVIDADES *
 
 // Get ALL actividades
 export const getActividades = async () => {
@@ -19,7 +20,7 @@ export const getActividades = async () => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
-export const crearActividad = async (idPropuesta, nombreActividad) => {
+export const addActividad = async (idPropuesta, nombreActividad) => {
     return axios.post(`${URL_BASE}/actividad/create-por-propuesta/${idPropuesta}`, { nombre: nombreActividad })
         .then(response => {
             Swal.fire('Actividad creada', '', 'success').then(() => { window.location.reload() });
@@ -57,7 +58,7 @@ export const getActividadesByPropuesta = async (idPropuesta) => {
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
 }
-// dependencias
+// * DEPENDENCIAS *
 
 export const getDependencias = async () => {
     return axios.get(API_GET_DEPENDENCIAS)
@@ -65,7 +66,7 @@ export const getDependencias = async () => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
-
+// * COHORTES *
 
 // Get All Cohortes from API
 export const getCohortes = async () => {
@@ -81,12 +82,29 @@ export const getCohorteById = async (idCohorte) => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
+export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio, fechaFin) => {
+    return axios.post(`${URL_BASE}/cohorte/create/${idActividad}/${idSede}`,
+        {
+            nombreCohorte: nombreCohorte,
+            fechaInicio: fechaInicio,
+            fechaFin: fechaFin
+        })
+        .then(response => {
+            Swal.fire('Cohorte creado!', '', 'success').then(() => { window.location.reload() });
+            return response.data.data
+        })
+        .catch (err => Swal.fire('Error', err, 'error'));
+}
+
+// * PROPUESTAS *
+
 export const getPropuestasByDependencia = async (idDependencia) => {
     return axios.get(`${URL_BASE}/propuesta/find/dependencia/${idDependencia}`)
         .then(response => response.data.data)
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
+// * SEDES *
 export const getSedes = async () => {
     return axios.get(API_GET_SEDES)
         .then(response => response.data.data)
