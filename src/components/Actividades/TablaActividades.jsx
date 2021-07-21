@@ -38,14 +38,12 @@ const TablaActividades2 = () => {
         Swal.fire({
             title: "¿Borrar actividad?",
             text: "Esta eliminará todas las cursadas, horarios y sesiones asignadas a la misma.",
-            type: "warning",
+            icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, borrar",
             cancelButtonText: "No, cancelar",
-            closeOnConfirm: false,
-            closeOnCancel: false,
         }).then((res) => {
             if (res.isConfirmed) {
                 Api.deleteActividad(data.idActividad);
