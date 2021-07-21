@@ -17,7 +17,7 @@ export default (props) => {
     const [idPropuesta, setIdPropuesta] = useState();
 
     const handleSubmit = async () => {
-        Api.crearActividad(idPropuesta, nombreActividad)
+        Api.addActividad(idPropuesta, nombreActividad)
     }
 
     const handleSelectDependencia = (event) => {
