@@ -34,14 +34,12 @@ const TablaCohortes2 = () => {
         Swal.fire({
             title: "¿Borrar cohorte?",
             text: "Esta acción eliminará todos los horarios y sesiones asociados al mismo.",
-            type: "warning",
+            icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, borrar",
             cancelButtonText: "No, cancelar",
-            closeOnConfirm: false,
-            closeOnCancel: false,
         }).then((res) => {
             if (res.isConfirmed) {
                 Api.deleteCohorte(row.idCohorte);
