@@ -17,7 +17,7 @@ export const API_GET_SESIONES = `${URL_BASE}/sesionpresencial/all`
 export const getActividades = async () => {
     return axios.get(API_GET_ACTIVIDADES)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener actividades', err, 'error'));
 }
 
 export const addActividad = async (idPropuesta, nombreActividad) => {
@@ -50,14 +50,55 @@ export const deleteActividad = async (idActividad) => {
 export const getActividadById = async (idActividad) => {
     return axios.get(`${URL_BASE}/actividad/find/${idActividad}`)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener actividad', err, 'error'));
 }
 
 export const getActividadesByPropuesta = async (idPropuesta) => {
     return axios.get(`${URL_BASE}/actividad/find/propuesta/${idPropuesta}`)
         .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al obtener actividad', err, 'error'));
+}
+// * AULAS *
+export const addAula = async (nombre, capacidadConAforo, idEdificio) => {
+    return axios.post(`${URL_BASE}/aula/create`, {
+        nombre: nombre,
+        capacidadConAforo: capacidadConAforo,
+        edificio: {
+            idEdificio: idEdificio
+        }
+    }).then(response => {
+        Swal.fire('Aula creada', '', 'success').then(() => { window.location.reload() });
+        return response.data.data;
+    })
         .catch(err => Swal.fire('Error', err, 'error'));
 }
+export const getAulas = async () => {
+    return axios.get(API_GET_AULAS)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al cargar aulas', err, 'error'));
+}
+
+export const updateAula = async (idAula, nuevoNombre, nuevaCapacidad) => {
+    return axios.put(`${URL_BASE}/aula/update/${idAula}`, {
+        nombre: nuevoNombre,
+        capacidadConAforo: nuevaCapacidad
+    })
+        .then(response => {
+            Swal.fire('Aula actualizada', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
+
+export const deleteAula = async (idAula) => {
+    return axios.delete(`${URL_BASE}/aula/delete/${idAula}`)
+        .then(response => {
+            Swal.fire('Aula eliminada', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
+
 // * DEPENDENCIAS *
 
 export const getDependencias = async () => {
@@ -115,6 +156,14 @@ export const updateCohorte = async (idCohorte, nombreCohorte, fechaInicio, fecha
             return response.data.data;
         })
 }
+
+// * EDIFICIOS *
+export const getEdificiosBySede = async (idSede) => {
+    return axios.get(`${URL_BASE}/edificio/sede/find/${idSede}`)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al obtener edificios', err, 'error'));
+}
+
 // * PROPUESTAS *
 
 export const getPropuestasByDependencia = async (idDependencia) => {
