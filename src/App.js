@@ -7,7 +7,7 @@ import AdminSeguimientos from './components/Seguimientos/AdminSeguimientos';
 import AdministrarActividades from './components/Actividades/AdministrarActividades';
 import AdministrarCohortes from './components/Cohortes/AdministrarCohortes';
 import AdministrarAulas from './components/Aulas/AdministrarAulas'
-import AsignarAulas from './components/Aulas/AsignarAulas' 
+import AsignarAulas from './components/AsignarAulas/AsignarAulas' 
 import AdministrarHorarios from './components/Horarios/AdministrarHorarios';
 
 function App() {

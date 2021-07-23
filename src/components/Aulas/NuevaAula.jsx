@@ -1,3 +1,6 @@
+// TODO: Las nuevas aulas deben admitir solo capacidades mayores a 0
+// Todo: Las nuevas aulas deben tener nombre.
+
 import {Modal, Button, Form} from "react-bootstrap";
 import * as Api from "../Api";
 import Swal from "sweetalert2";
