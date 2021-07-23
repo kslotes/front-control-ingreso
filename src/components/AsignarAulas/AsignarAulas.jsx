@@ -1,6 +1,6 @@
 import {Container, Col, Button} from "react-bootstrap";
 import NavBarTop from "../NavBar/NavBarTop";
-import ModalAsignarAula from "../Aulas/ModalAsignarAula";
+import ModalAsignarAula from "./ModalAsignarAula";
 import {useState} from "react";
 import TablaSesiones from "./TablaSesiones";
 export default () => {
