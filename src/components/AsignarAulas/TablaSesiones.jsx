@@ -1,20 +1,13 @@
 import {Button, Table} from "react-bootstrap";
 import {useState, useEffect} from "react";
-import {API_GET_SESIONES} from '../Api.js'
-import axios from "axios";
+import * as Api from "../Api"
 export default () => {
     const [sesiones, setSesiones] = useState([]);
 
     useEffect(() => {
-        const fetchSesiones = async () => {
-            try {
-                const res = await axios.get(`${API_GET_SESIONES}`);
-                setSesiones(res.data.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchSesiones();
+        Api.getSesiones().then(data => {
+            setSesiones(data);
+        })
     }, []);
     return (
         <Table variant="light" striped bordered responsive>

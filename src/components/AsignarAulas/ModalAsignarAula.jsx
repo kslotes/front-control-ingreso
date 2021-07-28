@@ -5,7 +5,8 @@ import {URL_BASE, API_GET_ACTIVIDADES, API_GET_SEDES} from "../Api.js";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-export default () => {
+export default ({showModal, handleClose}) => {
+
     const [show, setShow] = useState(false);
     const [actividades, setActividades] = useState([]);
     const [sedes, setSedes] = useState([]);
@@ -13,12 +14,11 @@ export default () => {
     const [aulas, setAulas] = useState([]);
 
     const [selectedActividad, setSelectedActividad] = useState();
-      const [selectedAula, setSelectedAula] = useState();
+    const [selectedAula, setSelectedAula] = useState();
 
-    const handleClose = () => setShow(false);
     const handleSubmit = async () => {
-          console.log(`Voy asignarle la actividad: ${selectedActividad}, al aula ${selectedAula}`)
-    }
+        console.log(`Voy asignarle la actividad: ${selectedActividad}, al aula ${selectedAula}`);
+    };
     const handleActividad = (event) => setSelectedActividad(event.target.value);
     const handleSede = async (event) => {
         try {
@@ -36,7 +36,7 @@ export default () => {
             console.error(err);
         }
     };
-    const handleAula = event => setSelectedAula(event.target.value);
+    const handleAula = (event) => setSelectedAula(event.target.value);
 
     useEffect(() => {
         const fetchActividades = async () => {
@@ -58,11 +58,12 @@ export default () => {
         fetchActividades();
         fetchSedes();
     }, []);
+
+    useEffect(() => {
+        setShow(showModal);
+    }, [showModal]);
     return (
         <>
-            <Button className="mb-3" variant="primary" onClick={() => setShow(true)}>
-                Asignar Aula
-            </Button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header>
                     <Modal.Title>Asignar Aula</Modal.Title>
