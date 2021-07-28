@@ -164,6 +164,26 @@ export const getEdificiosBySede = async (idSede) => {
         .catch(err => Swal.fire('Error al obtener edificios', err, 'error'));
 }
 
+// * HORARIOS *
+
+export const getHorariosByCohorte = async (idCohorte) => {
+    return axios.get(`${URL_BASE}/horario/find/${idCohorte}`)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al obtener horarios', err, 'error'));
+}
+
+export const addHorarioByCohorte = async (idActividad, idCohorte, dia, modalidad, horaInicio, horaFin) => {
+    return axios.post(`${URL_BASE}/horario/create-sesiones-vacias/${idActividad}/${idCohorte}`)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al crear horario', err, 'error'));
+
+}
+// * PERSONAS *
+export const getPersonas = async () => {
+    return axios.get(`${URL_BASE}/persona/all`)
+    .then(response => response.data.data)
+    .catch(err => Swal.fire('Error al obtener personas', err, 'error'));
+}
 // * PROPUESTAS *
 
 export const getPropuestasByDependencia = async (idDependencia) => {
@@ -179,3 +199,18 @@ export const getSedes = async () => {
         .catch(err => Swal.fire('Error', err, 'error'));
 }
 
+//* SESIONES *
+export const getSesiones = async () => {
+    return axios.get(API_GET_SESIONES)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
+
+export const deleteSesion = async (idSesion) => {
+    return axios.delete(`${URL_BASE}/sesionpresencial/delete/${idSesion}`)
+        .then((response) => {
+            Swal.fire('Sesion eliminada', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+        .catch(err => Swal.fire('Error', err, 'error'));
+}
