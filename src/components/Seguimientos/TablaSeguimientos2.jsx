@@ -48,9 +48,10 @@ const TablaSeguimientos2 = () => {
     const handleSeguimiento = () => {
         axios.get(`http://areco.gob.ar:9528/api/persona/find/persona_sesion/${fechaInicio}/${fechaFin}/${persona.idPersona}`).then((res) => {
             setContactosEstrechos(res.data.personas);
-            if (contactosEstrechos) {
-                setHiddenTable(false);
-            }
+            console.log(res.data.personas);
+            contactosEstrechos.length === 0
+                ? Swal.fire('¡Bien!', 'Esta persona no tiene contactos estrechos.', 'success')
+                : setHiddenTable(false)
         }).catch((err) => {
             Swal.fire({
                 title: `¡Oops!`,
