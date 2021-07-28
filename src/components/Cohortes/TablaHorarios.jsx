@@ -1,7 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {Table} from 'react-bootstrap'
 
+// TODO: Cambiar metodo de array por pushear individualmente los horarios
+// TODO : y traerlos de la BDD 
+
 const TablaHorarios = ({horarios, showTable}) => {
+
     return (
         <Table striped bordered className="mt-2" hidden={!showTable}>
             <thead>
