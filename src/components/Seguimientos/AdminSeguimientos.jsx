@@ -2,6 +2,7 @@ import NavBarTop from "../NavBar/NavBarTop";
 import {useState, useEffect} from "react";
 import {Container, Row, Col} from "react-bootstrap";
 import TablaSeguimientos2 from "./TablaSeguimientos2";
+import * as Api from "../Api"
 import axios from "axios";
 
 
@@ -9,11 +10,9 @@ const AdminSeguimientos = () => {
       const [personas, setPersonas] = useState([])
 
       useEffect(() => {
-            const fetchPersonas = async () => {
-                  const result = await axios.get("http://areco.gob.ar:9528/api/persona/all");
-                  setPersonas(result.data.data)
-            }
-            fetchPersonas();
+            Api.getPersonas().then(res => {
+                  setPersonas(res)
+            })
       }, []);
     return (
         <Container fluid className="fondo">
