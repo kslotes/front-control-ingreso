@@ -6,8 +6,8 @@ import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, Requir
 import CustomStore from "devextreme/data/custom_store";
 import {useState, useEffect} from "react";
 import {FilterRow} from "devextreme-react/tree-list";
-import NuevoCohorte from './NuevoCohorte'
-import ModificarCohorte from './ModificarCohorte'
+import NuevoCohorte from "./NuevoCohorte";
+import ModificarCohorte from "./ModificarCohorte";
 import Swal from "sweetalert2";
 
 const TablaCohortes2 = () => {
@@ -69,17 +69,17 @@ const TablaCohortes2 = () => {
 
     const columnas = [
         {
-            dataField: "idCohorte",
-            width: 50,
-            caption: "Id",
-        },
-        {
             dataField: "nombreCohorte",
             width: 300,
             caption: "Cohorte",
         },
         {
-            dataField: "sede.nombre",
+            dataField: "actividad",
+            width: 300,
+            caption: "Actividad",
+        },
+        {
+            dataField: "sede",
             width: 300,
             caption: "Sede",
         },
