@@ -1,12 +1,15 @@
 import React, {useState} from 'react'
 import { Container, Col, InputGroup, FormControl, Button } from 'react-bootstrap'
 import NavBarTop from '../NavBar/NavBarTop'
+import * as Api from '../Api'
 const Login = () => {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
 
+    const handleUserName = event => setUserName(event.target.value)
+    const handlePassword = event => setPassword(event.target.value)
     const handleSubmit = () => {
-        console.log(userName, password)
+        Api.login(userName, password)
     }
     return (
         <Container fluid className="fondo">
@@ -21,7 +24,7 @@ const Login = () => {
                             placeholder="Usuario"
                             aria-label="Usuario"
                             aria-describedby="basic-addon1"
-                            onChange={(e) => {setUserName(e.target.value)}}
+                            onChange={handleUserName}
                         />
                     </InputGroup>
                     <InputGroup className="mb-3">
@@ -31,7 +34,7 @@ const Login = () => {
                             placeholder="Contraseña"
                             aria-label="Contraseña"
                             aria-describedby="basic-addon1"
-                            onChange={(e) => {setPassword(e.target.value)}}
+                            onChange={handlePassword}
                         />
                     </InputGroup>
                 </Col>
