@@ -1,5 +1,5 @@
-import {Navbar, Nav, Row, Col} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Navbar, Nav, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import "./NavBarTop.css";
 const NavBarTop = () => {
@@ -11,7 +11,7 @@ const NavBarTop = () => {
                         UNSAdA
                     </Link>
                 </Col>
-                <Col >
+                <Col>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <NavbarCollapse>
                         <Nav>
@@ -40,8 +40,17 @@ const NavBarTop = () => {
                                     Seguimientos
                                 </Link>
                             </Nav.Item>
+
                         </Nav>
                     </NavbarCollapse>
+
+                </Col>
+                <Col xs={1}>
+                    <Nav.Item>
+                        <Link className="nav-link" to="/Login">
+                            Ingresar
+                        </Link>
+                    </Nav.Item>
                 </Col>
             </Navbar>
         </Row>
