@@ -181,16 +181,30 @@ export const getHorariosByCohorte = async (idCohorte) => {
 export const addHorarioByCohorteConAula = async (idActividad, idAula, idCohorte, dia, modalidad, horaInicio, horaFin) => {
     return axios.post(`${URL_BASE}/horario/create-por-cohorte/${idActividad}/${idAula}/${idCohorte}`, {
         dia: dia,
-        horaFin: horaFin,
-        horaInicio: horaInicio,
+        horaFin: horaFin + ':00',
+        horaInicio: horaInicio + ':00',
         nombre: modalidad,
     })
-    .then(response => {
-        Swal.fire('Horario Asignado', '', 'success');
-        return response.data.data;
-    })
+        .then(response => {
+            Swal.fire('Horario Asignado', '', 'success');
+            return response.data.data;
+        })
         .catch(err => Swal.fire('Error al asignar horario', err, 'error'));
 
+}
+
+// * LOGIN *
+
+export const login = (usuario, password) => {
+
+    axios({
+        method: 'post',
+        url: `${URL_BASE}/login/ingreso`,
+        headers: { 'Content-Type': 'application/json' },
+        data: {userName: usuario, password: password }
+    })
+        .then(response => console.log(response))
+        .catch(err => console.error(err))
 }
 // * PERSONAS *
 export const getPersonas = async () => {

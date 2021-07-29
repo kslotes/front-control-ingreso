@@ -1,5 +1,5 @@
-import {Form, Button, Modal, Table} from "react-bootstrap";
-import {useState, useEffect} from "react";
+import { Form, Button, Modal, Table } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import * as Api from "../Api.js";
 import TablaHorarios from "./TablaHorarios.jsx";
 
@@ -22,6 +22,8 @@ let arrHorarios = [];
 let placeholder = "Ingrese una";
 
 export default (props) => {
+
+    var actividadCohorte = { nombre: "default" };
     // * Parametros
     const [show, setShow] = useState(false);
     const [sedes, setSedes] = useState([]);
@@ -39,7 +41,9 @@ export default (props) => {
     const [fechaInicio, setFechaInicio] = useState();
     const [fechaFin, setFechaFin] = useState();
     // const [sedeDelCohorte, setSedeDelCohorte] = useState();
-
+    const [actividadDelCohorte, setActividadDelCohorte] = useState({
+        nombre: "default",
+    });
 
     // * Horario
     const [dia, setDia] = useState();
@@ -52,6 +56,7 @@ export default (props) => {
     const [edificiosDelCohorte, setEdificiosDelCohorte] = useState([]);
     const [edificio, setEdificio] = useState();
     const [aulasDelEdificio, setAulasDelEdificio] = useState([]);
+    const [hiddenActividad, setHiddenActividad] = useState(true);
 
     // * Extra
     const [cohorteCreado, setCohorteCreado] = useState();
@@ -80,7 +85,14 @@ export default (props) => {
     const handleModalidad = (event) => setModalidad(event.target.value);
     const handleCohorte = (event) => {
         setCohorteCreado(event.target.value)
+
         Api.getCohorteById(event.target.value).then((data) => {
+            console.log(data);
+            setActividadDelCohorte(data.actividad);
+            actividadCohorte = data.actividad;
+            console.log('Variable: ', actividadCohorte);
+            console.log('State: ', actividadDelCohorte);
+            setHiddenActividad(!hiddenActividad);
             Api.getEdificiosBySede(data.sede.idSede).then((data) => {
                 setEdificiosDelCohorte(data)
             })
@@ -93,15 +105,15 @@ export default (props) => {
         setEdificio(event.target.value)
     };
     const handleAula = event => setAula(event.target.value);
-    const handleSubmit = async () => {};
+    const handleSubmit = async () => { };
 
     const handleCrearCohorte = async () => {
         console.log(`${nombre}, ${sede}, ${dependencia}, ${propuesta}, ${actividad}, ${fechaInicio}, ${fechaFin}`);
         console.log(Api.addCohorte(actividad, sede, nombre, fechaInicio, fechaFin).then((res) => setCohorteCreado(res)));
     };
     const handleAsignarHorario = async () => {
-        Api.addHorarioByCohorteConAula(cohorteCreado, aula, dia, horaInicio, horaFin, modalidad, edificio, aulasDelEdificio)
-        console.log(`${cohorteCreado}, ${edificio}, ${aula}, ${dia}, ${horaInicio}, ${horaFin}, ${modalidad}`);
+        Api.addHorarioByCohorteConAula(actividadDelCohorte.idActividad, aula, cohorteCreado, dia, modalidad, horaInicio, horaFin)
+
     };
 
     useEffect(() => {
@@ -121,6 +133,7 @@ export default (props) => {
         Api.getCohortes().then((res) => {
             setCohortes(res);
         });
+
     }, [cohorteCreado]);
     return (
         <>
@@ -214,6 +227,10 @@ export default (props) => {
                                 </option>
                             ))}
                         </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formActividad" className="mt-2" hidden={hiddenActividad}>
+                        <Form.Label>Actividad</Form.Label>
+                        <Form.Control type="text" value={actividadDelCohorte.nombre} readOnly />
                     </Form.Group>
                     <Form.Group controlId="formEdificio" className="mt-2">
                         <Form.Label>Edificio</Form.Label>

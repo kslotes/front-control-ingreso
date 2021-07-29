@@ -74,7 +74,7 @@ const TablaCohortes2 = () => {
             caption: "Cohorte",
         },
         {
-            dataField: "actividad",
+            dataField: "actividad.nombre",
             width: 300,
             caption: "Actividad",
         },
