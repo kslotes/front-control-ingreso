@@ -10,6 +10,8 @@ import TablaHorarios from "./TablaHorarios.jsx";
  TODO: Crear horarios en base de datos
  TODO: Agregar a la tabla de cohortes los horarios asignados
  TODO: Migrar sistema de array para horarios y Get en base de datos y PUSH individual.
+ TODO: Agregar Aula al modal. usar create-por-cohorte. Implementar opcion "Sin Asignar"
+
  ? Como renderizar nuevamente la tabla cuando se alteran los datos (evitar el window.location.reload())
 */
 
@@ -36,6 +38,8 @@ export default (props) => {
     const [actividad, setActividad] = useState();
     const [fechaInicio, setFechaInicio] = useState();
     const [fechaFin, setFechaFin] = useState();
+    // const [sedeDelCohorte, setSedeDelCohorte] = useState();
+
 
     // * Horario
     const [dia, setDia] = useState();
@@ -43,7 +47,11 @@ export default (props) => {
     const [horaFin, setHoraFin] = useState();
     const [modalidad, setModalidad] = useState();
     const [showTable, setShowTable] = useState();
+    const [aula, setAula] = useState();
     const [horarios, setHorarios] = useState(arrHorarios);
+    const [edificiosDelCohorte, setEdificiosDelCohorte] = useState([]);
+    const [edificio, setEdificio] = useState();
+    const [aulasDelEdificio, setAulasDelEdificio] = useState([]);
 
     // * Extra
     const [cohorteCreado, setCohorteCreado] = useState();
@@ -70,7 +78,21 @@ export default (props) => {
     const handleHoraInicio = (event) => setHoraInicio(event.target.value);
     const handleHoraFin = (event) => setHoraFin(event.target.value);
     const handleModalidad = (event) => setModalidad(event.target.value);
-    const handleCohorte = (event) => setCohorteCreado(event.target.value);
+    const handleCohorte = (event) => {
+        setCohorteCreado(event.target.value)
+        Api.getCohorteById(event.target.value).then((data) => {
+            Api.getEdificiosBySede(data.sede.idSede).then((data) => {
+                setEdificiosDelCohorte(data)
+            })
+        })
+    };
+    const handleEdificio = event => {
+        Api.getAulasByEdificio(event.target.value).then((data) => {
+            setAulasDelEdificio(data);
+        });
+        setEdificio(event.target.value)
+    };
+    const handleAula = event => setAula(event.target.value);
     const handleSubmit = async () => {};
 
     const handleCrearCohorte = async () => {
@@ -78,8 +100,8 @@ export default (props) => {
         console.log(Api.addCohorte(actividad, sede, nombre, fechaInicio, fechaFin).then((res) => setCohorteCreado(res)));
     };
     const handleAsignarHorario = async () => {
-        setShowTable(true);
-        console.log(`${dia}, ${horaInicio}, ${horaFin}, ${modalidad}`);
+        Api.addHorarioByCohorteConAula(cohorteCreado, aula, dia, horaInicio, horaFin, modalidad, edificio, aulasDelEdificio)
+        console.log(`${cohorteCreado}, ${edificio}, ${aula}, ${dia}, ${horaInicio}, ${horaFin}, ${modalidad}`);
     };
 
     useEffect(() => {
@@ -189,6 +211,32 @@ export default (props) => {
                             {cohortes.map((cohorte) => (
                                 <option key={cohorte.idCohorte} value={cohorte.idCohorte}>
                                     {`${cohorte.idCohorte} - ${cohorte.nombreCohorte}`}
+                                </option>
+                            ))}
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formEdificio" className="mt-2">
+                        <Form.Label>Edificio</Form.Label>
+                        <Form.Control as="select" onChange={handleEdificio} required>
+                            <option key="blank" hidden value>
+                                Seleccione uno
+                            </option>
+                            {edificiosDelCohorte.map((edificio) => (
+                                <option key={edificio.idEdificio} value={edificio.idEdificio}>
+                                    {`${edificio.idEdificio} - ${edificio.nombre}`}
+                                </option>
+                            ))}
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="formAula" className="mt-2">
+                        <Form.Label>Aula</Form.Label>
+                        <Form.Control as="select" onChange={handleAula} required>
+                            <option key="blank" hidden value>
+                                Seleccione una
+                            </option>
+                            {aulasDelEdificio.map((aula) => (
+                                <option key={aula.idAula} value={aula.idAula}>
+                                    {`${aula.idAula} - ${aula.nombre}`}
                                 </option>
                             ))}
                         </Form.Control>

@@ -79,7 +79,7 @@ const TablaCohortes2 = () => {
             caption: "Actividad",
         },
         {
-            dataField: "sede",
+            dataField: "sede.nombre",
             width: 300,
             caption: "Sede",
         },
@@ -123,6 +123,7 @@ const TablaCohortes2 = () => {
                 allowColumnResizing={true}
                 columnAutoWidth={false}
                 showBorders={true}
+                width='100%'
             >
                 <Paging enabled={true} defaultPageSize={10} />
                 <Pager enabled={true} showNavigationButtons={true} showInfo={true} />

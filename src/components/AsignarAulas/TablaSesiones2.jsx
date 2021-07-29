@@ -6,6 +6,7 @@ import CustomStore from "devextreme/data/custom_store";
 import {FilterRow} from "devextreme-react/tree-list";
 import ModalAsignarAula from "./ModalAsignarAula";
 import Swal from "sweetalert2";
+import ModificarSesion from "./ModificarSesion.jsx";
 
 const filtros = ["contains", "="];
 
@@ -23,7 +24,7 @@ const columnas = [
     },
     {
         dataField: "nombreActividad",
-        width: 250,
+        width: 500,
         caption: "Actividad",
     },
     {
@@ -55,7 +56,7 @@ const TablaSesiones2 = () => {
     const handleBorrarClick = (data) => {
         Swal.fire({
             title: "¿Borrar clase?",
-            text: "Esta acción eliminará todas las solicitudes que los participantes han realizado.",
+            text: "Esta acción eliminará todos los permisos que los participantes han solicitado.",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -76,19 +77,6 @@ const TablaSesiones2 = () => {
         setShowAgregar(false);
     };
 
-    const onToolbarPreparing = (e) => {
-        let toolbarItems = e.toolbarOptions.items;
-        // Modifies an existing item
-        toolbarItems.forEach(function (item) {
-            if (item.name === "addRowButton") {
-                item.options = {
-                    icon: "add",
-                    hint: "Agregar",
-                    onClick: handleAgregarClick,
-                };
-            }
-        });
-    };
     const [data] = useState(
         new CustomStore({
             key: "idSesionPresencial",
@@ -103,16 +91,15 @@ const TablaSesiones2 = () => {
 
     return (
         <div>
-            <ModalAsignarAula showModal={showAgregar} handleClose={handleCloseAgregar} />
-
+            {showModificar ? <ModificarSesion showModal={showModificar} handleClose={handleCloseModificar} sesion={sesionSeleccionada} /> : null}
             <DataGrid
                 id="dataGrid"
-                onToolbarPreparing={onToolbarPreparing}
                 refresh={true}
                 dataSource={data}
                 allowColumnReordering={true}
                 allowColumnResizing={true}
-                columnAutoWidth={false}
+                columnAutoWidth={true}
+                width='100%'
                 showBorders={true}
             >
                 <Paging enabled={true} defaultPageSize={10} />
@@ -120,9 +107,9 @@ const TablaSesiones2 = () => {
                 <FilterRow visible={true} resetOperationText="Deshacer filtros">
                     <OperationDescriptions contains="Contiene" equal="Busqueda Exacta" />
                 </FilterRow>
-                <Editing useIcons={true} allowAdding={true} allowUpdating={true} allowDeleting={true} />
+                <Editing useIcons={true} allowUpdating={true} allowDeleting={true} />
                 <Column type="buttons" caption="Acciones">
-
+                    <Button name="edit" hint="Editar" onClick={(event) => handleEditarClick(event.row.data)} />
                     <Button name="delete" hint="Borrar" onClick={(event) => handleBorrarClick(event.row.data)} />
                 </Column>
                 {columnas.map((c) => {
