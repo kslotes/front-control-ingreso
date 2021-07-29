@@ -1,13 +1,13 @@
 import React from "react";
 import "devextreme/dist/css/dx.light.css";
 import * as Api from "../Api.js";
-import DataGrid, {Editing, Column, Button, OperationDescriptions, Paging, RequiredRule, Pager, Popup} from "devextreme-react/data-grid";
-import {Form} from "react-bootstrap";
-import {Item} from "devextreme-react/form";
+import DataGrid, { Editing, Column, Button, OperationDescriptions, Paging, RequiredRule, Pager, Popup } from "devextreme-react/data-grid";
+import { Form } from "react-bootstrap";
+import { Item } from "devextreme-react/form";
 import CustomStore from "devextreme/data/custom_store";
-import {useState, useEffect} from "react";
-import {FilterRow} from "devextreme-react/tree-list";
-import {ModificarActividad} from "./ModificarActividad";
+import { useState, useEffect } from "react";
+import { FilterRow } from "devextreme-react/tree-list";
+import { ModificarActividad } from "./ModificarActividad";
 import deleteActividad from "./deleteActividad";
 import NuevaActividad from "./NuevaActividad";
 import Swal from "sweetalert2";
@@ -55,7 +55,6 @@ const TablaActividades2 = () => {
     const [data] = useState(
         new CustomStore({
             key: "idActividad",
-
             load: () => {
                 console.log(Api.getActividades());
                 return Api.getActividades();
@@ -123,8 +122,9 @@ const TablaActividades2 = () => {
                 dataSource={data}
                 allowColumnReordering={true}
                 allowColumnResizing={true}
-                columnAutoWidth={false}
+                columnAutoWidth={true}
                 showBorders={true}
+                width='100%'
             >
                 <Paging enabled={true} defaultPageSize={10} />
                 <Pager enabled={true} showNavigationButtons={true} showInfo={true} />

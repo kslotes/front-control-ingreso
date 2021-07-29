@@ -119,6 +119,7 @@ const TablaAulas2 = () => {
                 allowColumnResizing={true}
                 columnAutoWidth={false}
                 showBorders={true}
+                width='100%'
             >
                 <Paging enabled={true} defaultPageSize={10} />
                 <Pager enabled={true} showNavigationButtons={true} showInfo={true} />
