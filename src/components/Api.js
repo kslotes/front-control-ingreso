@@ -26,7 +26,7 @@ export const addActividad = async (idPropuesta, nombreActividad) => {
             Swal.fire('Actividad creada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al crear actividad', err, 'error'));
 }
 
 export const updateActividad = async (idActividad, nombreActividad) => {
@@ -35,7 +35,7 @@ export const updateActividad = async (idActividad, nombreActividad) => {
             Swal.fire('Actividad actualizada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al actualizar actividad', err, 'error'));
 }
 
 export const deleteActividad = async (idActividad) => {
@@ -44,7 +44,7 @@ export const deleteActividad = async (idActividad) => {
             Swal.fire('Actividad eliminada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al eliminar actividad', err, 'error'));
 }
 // Get Actividad for ID From API
 export const getActividadById = async (idActividad) => {
@@ -70,7 +70,7 @@ export const addAula = async (nombre, capacidadConAforo, idEdificio) => {
         Swal.fire('Aula creada', '', 'success').then(() => { window.location.reload() });
         return response.data.data;
     })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al crear aula', err, 'error'));
 }
 export const getAulas = async () => {
     return axios.get(API_GET_AULAS)
@@ -78,6 +78,11 @@ export const getAulas = async () => {
         .catch(err => Swal.fire('Error al cargar aulas', err, 'error'));
 }
 
+export const getAulasByEdificio = async (idEdificio) => {
+    return axios.get(`${URL_BASE}/aula/find/edificio/${idEdificio}`)
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al cargar aulas', err, 'error'));
+}
 export const updateAula = async (idAula, nuevoNombre, nuevaCapacidad) => {
     return axios.put(`${URL_BASE}/aula/update/${idAula}`, {
         nombre: nuevoNombre,
@@ -87,7 +92,7 @@ export const updateAula = async (idAula, nuevoNombre, nuevaCapacidad) => {
             Swal.fire('Aula actualizada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al actualizar aula', err, 'error'));
 }
 
 export const deleteAula = async (idAula) => {
@@ -96,7 +101,7 @@ export const deleteAula = async (idAula) => {
             Swal.fire('Aula eliminada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al eliminar aula', err, 'error'));
 }
 
 // * DEPENDENCIAS *
@@ -104,7 +109,7 @@ export const deleteAula = async (idAula) => {
 export const getDependencias = async () => {
     return axios.get(API_GET_DEPENDENCIAS)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener dependencias', err, 'error'));
 }
 
 // * COHORTES *
@@ -113,14 +118,14 @@ export const getDependencias = async () => {
 export const getCohortes = async () => {
     return axios.get(API_GET_COHORTES)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener cohortes', err, 'error'));
 }
 
 // Get Cohorte for ID From API
 export const getCohorteById = async (idCohorte) => {
     return axios.get(`${URL_BASE}/cohorte/find/${idCohorte}`)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al encontrar cohorte', err, 'error'));
 }
 
 export const deleteCohorte = async (idCohorte) => {
@@ -129,7 +134,7 @@ export const deleteCohorte = async (idCohorte) => {
             Swal.fire('Cohorte eliminado', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al eliminar cohorte', err, 'error'));
 }
 export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio, fechaFin) => {
     return axios.post(`${URL_BASE}/cohorte/create/${idActividad}/${idSede}`,
@@ -142,7 +147,7 @@ export const addCohorte = async (idActividad, idSede, nombreCohorte, fechaInicio
             Swal.fire('Cohorte creado!', 'Recargue la pagina para ver los cambios', 'success');
             return response.data
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al crear cohorte', err, 'error'));
 }
 
 export const updateCohorte = async (idCohorte, nombreCohorte, fechaInicio, fechaFin) => {
@@ -155,6 +160,7 @@ export const updateCohorte = async (idCohorte, nombreCohorte, fechaInicio, fecha
             Swal.fire('Cohorte actualizado', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
+        .catch(err => Swal.fire('Error al actualizar el cohorte', err, 'error'));
 }
 
 // * EDIFICIOS *
@@ -172,38 +178,46 @@ export const getHorariosByCohorte = async (idCohorte) => {
         .catch(err => Swal.fire('Error al obtener horarios', err, 'error'));
 }
 
-export const addHorarioByCohorte = async (idActividad, idCohorte, dia, modalidad, horaInicio, horaFin) => {
-    return axios.post(`${URL_BASE}/horario/create-sesiones-vacias/${idActividad}/${idCohorte}`)
-        .then(response => response.data.data)
-        .catch(err => Swal.fire('Error al crear horario', err, 'error'));
+export const addHorarioByCohorteConAula = async (idActividad, idAula, idCohorte, dia, modalidad, horaInicio, horaFin) => {
+    return axios.post(`${URL_BASE}/horario/create-por-cohorte/${idActividad}/${idAula}/${idCohorte}`, {
+        dia: dia,
+        horaFin: horaFin,
+        horaInicio: horaInicio,
+        nombre: modalidad,
+    })
+    .then(response => {
+        Swal.fire('Horario Asignado', '', 'success');
+        return response.data.data;
+    })
+        .catch(err => Swal.fire('Error al asignar horario', err, 'error'));
 
 }
 // * PERSONAS *
 export const getPersonas = async () => {
     return axios.get(`${URL_BASE}/persona/all`)
-    .then(response => response.data.data)
-    .catch(err => Swal.fire('Error al obtener personas', err, 'error'));
+        .then(response => response.data.data)
+        .catch(err => Swal.fire('Error al obtener personas', err, 'error'));
 }
 // * PROPUESTAS *
 
 export const getPropuestasByDependencia = async (idDependencia) => {
     return axios.get(`${URL_BASE}/propuesta/find/dependencia/${idDependencia}`)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener propuestas', err, 'error'));
 }
 
 // * SEDES *
 export const getSedes = async () => {
     return axios.get(API_GET_SEDES)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener sedes', err, 'error'));
 }
 
 //* SESIONES *
 export const getSesiones = async () => {
     return axios.get(API_GET_SESIONES)
         .then(response => response.data.data)
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al obtener sesiones', err, 'error'));
 }
 
 export const deleteSesion = async (idSesion) => {
@@ -212,5 +226,15 @@ export const deleteSesion = async (idSesion) => {
             Swal.fire('Sesion eliminada', '', 'success').then(() => { window.location.reload() });
             return response.data.data;
         })
-        .catch(err => Swal.fire('Error', err, 'error'));
+        .catch(err => Swal.fire('Error al eliminar la sesión', err, 'error'));
+}
+
+export const updateSesion = async (idSesion, fecha) => {
+    return axios.put(`${URL_BASE}/sesionpresencial/update/${idSesion}`, { fecha: fecha })
+        .then((response) => {
+            Swal.fire('Sesion actualizada', '', 'success').then(() => { window.location.reload() });
+            return response.data.data;
+        })
+        .catch(err => Swal.fire('Error al actualizar la sesión', err, 'error'));
+
 }
